@@ -1,0 +1,11 @@
+
+Activar entorno virtual 
+    source virtual/Scripts/activate
+crear projecto
+    django-admin startproject Ecomer
+crear apps
+    django-admin startapp empleados
+migraciones 
+    python manage.py makemigrations
+    python manage.py migrate
+

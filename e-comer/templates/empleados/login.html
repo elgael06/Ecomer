@@ -1,0 +1,32 @@
+
+{% extends "index.html" %}
+{% block title %}Login {% endblock %}
+{% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'src/css/login.css' %}"/>
+    
+     <div class="panel panel-default"> 
+          <div class="panel-heading">
+                <h1>Iniciar Sesion.</h1>
+          </div>
+          <form class="panel-body" id="contenido">
+               <div class="form control entradas">
+                    <label>Nombre</label>
+                      <input type="text"
+                         v-model="usuario"
+                        class="form-control" name="id" placeholder="Nombre...">
+                      <small id="helpId" class="form-text text-muted">Aqui Se Coloca El Nombre De Usuario.</small>
+               </div>
+               <div class="form control entradas">
+                    <label>Password</label>
+                      <input type="Password"
+                         v-model="password"
+                        class="form-control" name="password" placeholder="Password...">
+                      <small id="helpId" class="form-text text-muted">Aqui Se Coloca La Contraseña</small>
+               </div>
+               <input v-on:click="enviar" class="btn btn-primary entradas" type="submit" value="Entrar">
+          </form>
+     </div>
+     
+    <script type="text/javascript" src="{% static 'src/js/login/main.js' %}" ></script>
+{% endblock %}
