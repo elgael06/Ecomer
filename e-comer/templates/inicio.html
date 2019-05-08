@@ -58,36 +58,61 @@
                 </li>
               </ul>
         </li>  
-        <li class="{% if request.path  == '/about/'  %}active{% else%} {% endif %}">
-          <a href="/about"  style="color:#FFF">Acerca</a>
+        <li class="{% if request.path  == '/usuarios/about/'  %}active{% else%} {% endif %}">
+          <a href="/usuarios/about"  style="color:#FFF">Acerca</a>
         </li>   
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if request.session.id_usuario > 0 %}
                    : 
-                  <li><a style="color:#FFF" class="fa fa-user">   {{request.session.usuario}}</a></li>
-                <li><a style="color:#FFF;background: red" href="/usuarios/login"><i class="fa fa-sign-out"> Salir</i>.</a></li>
-                {% else %}
+                <li><a style="color:#FFF" class="fa fa-user">   {{request.session.usuario}}</a></li>
                 <li class="{% if request.path  == '/usuarios/login/'  %}active{% else%} {% endif %}">
-                  <a href="/login">Inicio Sesion</a>
+                  <a style="color:#FFF;background: red" href="/usuarios/login">
+                    <i class="fa fa-sign-out"> Salir</i>.
+                  </a>
+                </li>
+                {% else %}
+                <li class="{% if request.path  == '/usuarios/login/'  %}active{% else%}disableLink{% endif %}">
+                  <a style="color:#FFF" class="fa fa-login" href="/usuarios/login">Inicio Sesion</a>
                 </li>
             {% endif %}
       </ul>
     </div>
   </div>
 </nav>
-<div class="container" id="contenedor" style="margin-top:60px"  style="background-color: #9fabb6;min-height: 90%">
-
-    {% block content %}{% endblock %}
+<div class="container" id="contenedor" style="margin-top:60px" 
+style="background: #9fabb6;min-height: 94%">
+    {% block content %}
+      Aqui Va El Contenido...
+    {% endblock %}
 </div>
 <footer style="float: right;padding: 20px">
   By elgael06
 </footer>
 </body>
 <style>
+  body{
+    background: #f0f5f5;
+  }
+  nav{
+    padding:3px;
+    margin-left: 2px;
+    margin-right:2px;
+    margin-top: 1px;
+  }
+  .navbar-right>li{
+    border-radius: 10px;
+  }
   #contenedor>div{
-    min-height: 100%;
+    min-height: 150px;
     border: solid 1px #125391;
+  }
+  .active{
+    background: #9fabb6;
+
+  }
+  .disableLink{
+    background:#33bd7c;
   }
 </style>
 <script type="text/javascript" src="{% static 'src/lib/JQuery/jquery-3.4.1.min.js' %}" ></script>
