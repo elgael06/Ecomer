@@ -66,9 +66,9 @@
         {% if request.session.id_usuario > 0 %}
                    : 
                   <li><a style="color:#FFF" class="fa fa-user">   {{request.session.usuario}}</a></li>
-                <li><a style="color:#FFF;background: red" href="/login"><i class="fa fa-sign-out"> Salir</i>.</a></li>
+                <li><a style="color:#FFF;background: red" href="/usuarios/login"><i class="fa fa-sign-out"> Salir</i>.</a></li>
                 {% else %}
-                <li class="{% if request.path  == '/login/'  %}active{% else%} {% endif %}">
+                <li class="{% if request.path  == '/usuarios/login/'  %}active{% else%} {% endif %}">
                   <a href="/login">Inicio Sesion</a>
                 </li>
             {% endif %}
