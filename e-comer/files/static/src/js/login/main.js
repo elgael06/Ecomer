@@ -1,7 +1,7 @@
 
 let $MI_URL = `${window.location.protocol}//${window.location.hostname}`,
     $URL_MVC = "/Globales/",
-    $URL_API = "/api/";
+    $URL_API = "";
 
 const  login = new Vue({
     el:"#contenido",
@@ -12,9 +12,13 @@ const  login = new Vue({
     methods: {
         enviar(event){
             if(this.usuario!="" && this.password!="")
-            fetch(`${$URL_API}login/?id=${this.usuario}&password=${this.password}`, {
-                method: 'get',
+            fetch(`${$URL_API}/usuarios/api/login`, {
+                method: 'post',
                 credentials: 'same-origin',
+                body:JSON.stringify({
+                    id:this.usuario,
+                    password:this.password
+                }),
                 headers: {
                     'Content-Type': 'application/json'
                 }

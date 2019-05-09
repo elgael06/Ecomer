@@ -17,7 +17,7 @@
     <script type="text/javascript" src="{% static 'src/lib/React/react.production.min.js' %}" ></script>
 </head>
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top" style="background: #125391">
+<nav class="navbar navbar-inverse navbar-fixed-top" >
   <div class="container-fluid">
     <div class="navbar-header" >
       <button style="color:#FFF" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -25,41 +25,41 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" style="color:#FFF" href="/">My Sistema</a>
+      <a class="navbar-brand" style="color:#FFF;font-size: 18px;" href="/">
+        <i class="fa fa-shopping-cart" style="font-size: 25px"></i> MyEcomer</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="{% if request.path  == '/'  %}active{% else%} {% endif %}">
-          <a  style="color:#FFF" href="/">Inicio</a>
+        <li class="menu {% if request.path  == '/'  %}active{% else%} {% endif %}">
+          <a class="fa fa-home" style="color:#FFF" href="/"> Inicio</a>
         </li>
         <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown"  style="color:#FFF">
-            Administracion 
-            <span class="caret"></span></a>
+          <a class="dropdown-toggle fa fa-briefcase" data-toggle="dropdown"  style="color:#FFF"> Administracion <span class="caret"></span>
+          </a>
             <ul class="dropdown-menu">
               <li class="{% if request.path  == '/usuarios/'  %}active{% else%} {% endif %}">
-                <a href="/usuarios">Usuarios</a>
+                <a class="fa fa-users" href="/usuarios"> Usuarios</a>
               </li>
             </ul>
         </li>   
         <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown"  style="color:#FFF">
+            <a class="fa fa-cart-arrow-down dropdown-toggle" data-toggle="dropdown"  style="color:#FFF">
               Comercio 
               <span class="caret"></span></a>
               <ul class="dropdown-menu">
                   <li class="{% if request.path  == '/Compras/'  %}active{% else%} {% endif %}">
-                    <a href="/Compras">Compras</a>
+                    <a class="fa fa-shopping-basket" href="/Compras"> Compras</a>
                   </li>
                 <li class="{% if request.path  == '/Ventas/'  %}active{% else%} {% endif %}">
-                  <a href="/Ventas">Ventas</a>
+                  <a class="fa fa-laptop" href="/Ventas"> Ventas</a>
                 </li>
                 <li class="{% if request.path  == '/Productos/'  %}active{% else%} {% endif %}">
-                  <a href="/Productos">Productos</a>
+                  <a class="fa fa-cubes" href="/Productos"> Productos</a>
                 </li>
               </ul>
         </li>  
-        <li class="{% if request.path  == '/usuarios/about/'  %}active{% else%} {% endif %}">
-          <a href="/usuarios/about"  style="color:#FFF">Acerca</a>
+        <li class="{% if request.path  == '/usuarios/about'  %}active{% else%} {% endif %}">
+          <a class="fa fa-info-circle" href="/usuarios/about"  style="color:#FFF"> Acerca</a>
         </li>   
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -73,7 +73,7 @@
                 </li>
                 {% else %}
                 <li class="{% if request.path  == '/usuarios/login/'  %}active{% else%}disableLink{% endif %}">
-                  <a style="color:#FFF" class="fa fa-login" href="/usuarios/login">Inicio Sesion</a>
+                  <a class="fa fa-login" href="/usuarios/login"> Inicio Sesion</a>
                 </li>
             {% endif %}
       </ul>
@@ -89,32 +89,12 @@ style="background: #9fabb6;min-height: 94%">
 <footer style="float: right;padding: 20px">
   By elgael06
 </footer>
-</body>
-<style>
-  body{
-    background: #f0f5f5;
-  }
-  nav{
-    padding:3px;
-    margin-left: 2px;
-    margin-right:2px;
-    margin-top: 1px;
-  }
-  .navbar-right>li{
-    border-radius: 10px;
-  }
-  #contenedor>div{
-    min-height: 150px;
-    border: solid 1px #125391;
-  }
-  .active{
-    background: #9fabb6;
 
-  }
-  .disableLink{
-    background:#33bd7c;
-  }
-</style>
 <script type="text/javascript" src="{% static 'src/lib/JQuery/jquery-3.4.1.min.js' %}" ></script>
     <script type="text/javascript" src="{% static 'src/lib/bootstrap/bootstrap.js' %}" ></script>
+</body>
+<link rel="stylesheet" type="text/css" href="{% static 'src/css/main.css' %}"/>
+<style>
+ 
+</style>
 </html>

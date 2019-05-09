@@ -1,6 +1,6 @@
 let $MI_URL = `${window.location.protocol}//${window.location.hostname}`,
     $URL_MVC = "/Globales/",
-    $URL_API = "/api/";
+    $URL_API = "";
 
 const usuarios = new Vue({
     el:"#contenedor",
@@ -49,7 +49,7 @@ const usuarios = new Vue({
     //funciones
     //conexiones
         obtenerUsuarios(){
-            fetch(`${$URL_API}lista_usuarios/`, {
+            fetch(`${$URL_API}/usuarios/api/`, {
                 method: 'get',
                 credentials: 'same-origin',
                 headers: {
@@ -59,7 +59,7 @@ const usuarios = new Vue({
                 .catch(err => console.error("Error=>", err))
                 .then(res => res.json().then(respuesta => {
 
-                    this.lista = respuesta.lista;
+                    this.lista = respuesta.usuarios;
                 }))
         },
         guardar_nuevo_usuario(){

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-
+from ..Acceso import acceso
 # Create your views here.
 def index(request):
-    return render(request, 'tienda/index.html', {}) 
+    return acceso(request, 'tienda/index.html', {}) 
