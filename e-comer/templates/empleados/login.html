@@ -11,20 +11,25 @@
           </div>
           <form class="panel-body" id="contenido">
                <div class="form control entradas">
-                    <label>Nombre</label>
+                    <label>Id Usuario</label>
                       <input type="text"
                          v-model="usuario"
+                         name="id_usuari_sesion"
                         class="form-control" name="id" placeholder="Nombre...">
-                      <small id="helpId" class="form-text text-muted">Aqui Se Coloca El Nombre De Usuario.</small>
+                      <small id="helpId" class="form-text text-muted">Aqui Se Coloca El Id De Usuario Previamente asignado.</small>
                </div>
                <div class="form control entradas">
                     <label>Password</label>
                       <input type="Password"
                          v-model="password"
+                         name="passw_usuari_sesion"
                         class="form-control" name="password" placeholder="Password...">
-                      <small id="helpId" class="form-text text-muted">Aqui Se Coloca La Contraseña</small>
+                      <small id="helpId" class="form-text text-muted">En Caso De Perder La Contraseña Pedir Restauracion A Administrado.</small>
                </div>
-               <input v-on:click="enviar" class="btn btn-primary entradas" type="submit" value="Entrar">
+               <button v-on:click="enviar" class="btn btn-primary entradas">
+                    Entrar 
+                    <i class="fa fa-sign-in"></i>
+               </button>
           </form>
      </div>
      

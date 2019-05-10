@@ -33,30 +33,28 @@ class UsuariosView(APIView):
         nom = request.data.get('nombre')
         nom_c = request.data.get('nombre_completo')
         passw = request.data.get('password')
-        creo = request.data.get('creo')
+        creo = request.session["id_usuario"]
         foto = " "
         usr = Usuario(nombre=nom, nombre_completo=nom_c, password=passw, foto=foto,usuario_creo = creo)
         print(usr.nombre)
         usr.save()
         return Response({"Usuario ":usr.id})
 
-    def put(self, instance, validated_data):
-        data = {}
-        id_usr = request.GET.get('id', None)
-        nom = request.GET.get('nombre', None)
-        nom_c = request.GET.get('nombre_completo', None)
-        passw = request.GET.get('password', None)
+    def put(self,request):
+        id_usr = request.data.get('id')
+        nom = request.data.get('nombre')
+        nom_c = request.data.get('nombre_completo')
+        passw = request.data.get('password')
+        usuario_modifico = request.session["id_usuario"]
         foto = " "
-        Usuario.objects.filter(id=id_usr).update(nombre=nom, nombre_completo=nom_c, password=passw, foto=foto,usuario_modifico=request.session['id_usuario'])
+        Usuario.objects.filter(id=id_usr).update(nombre=nom, nombre_completo=nom_c, password=passw, foto=foto,usuario_modifico=usuario_modifico)
         return JsonResponse({'respuesta': 'Usuario Actualizado...', "id": id_usr})
 
-    def delete(self,request):
-        data = {}
-        id_usr = request.GET.get('id', None)
-        print("ID: "+ id_usr)
-
-        usr = Usuario.objects.filter(id=id_usr)
-        usr.delete()
+    def patch(self,request):
+        id_usr = request.data.get('id')
+        print("ID: "+ str(id_usr))
+        usr = Usuario.objects.filter(id=id_usr).update(estatus="C")
+        #usr.delete()
         return JsonResponse({'respuesta': 'Usuario Eliminado !!!'})
     
 class LoginView(APIView):

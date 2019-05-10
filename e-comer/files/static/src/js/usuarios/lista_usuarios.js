@@ -65,16 +65,21 @@ const usuarios = new Vue({
         guardar_nuevo_usuario(){
         console.log("Guardar = ",this.seleccion);
         let { nombre, nombre_completo, password } = this.seleccion;
-            fetch(`${$URL_API}lista_usuarios/Agregar?nombre=${nombre}&nombre_completo=${nombre_completo}&password=${password}`, {
-                method: 'get',
+            fetch(`${$URL_API}/usuarios/api/`, {
+                method: 'post',
                 credentials: 'same-origin',
+                body:JSON.stringify({
+                    nombre:nombre,
+                    nombre_completo:nombre_completo,
+                    password:password
+                }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
                 .catch(err => console.error("Error=>", err))
                 .then(res => res.json().then(r=> {
-                    alert(r.respuesta);
+                    alert(r.Usuario);
                     this.obtenerUsuarios();
                     this.seleccion={
                         id:0,
@@ -86,53 +91,36 @@ const usuarios = new Vue({
                 }))
         },
         actualizar_usuario(event){
-        console.log("Actualizar = ",this.seleccion);
-        let {id, nombre, nombre_completo, password } = this.seleccion;
-            fetch(`${$URL_API}lista_usuarios/Editar?id=${id}&nombre=${nombre}&nombre_completo=${nombre_completo}&password=${password}`, {
-                method: 'get',
+            console.log("Actualizar = ",this.seleccion);
+            let {id, nombre, nombre_completo, password } = this.seleccion;
+            fetch(`${$URL_API}/usuarios/api/`, {
+                method: 'put',
                 credentials: 'same-origin',
+                body:JSON.stringify({
+                    id:id,
+                    nombre:nombre,
+                    nombre_completo:nombre_completo,
+                    password:password
+                }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-                .catch(err => console.error("Error=>", err))
-                .then(res => res.json().then(r=> {
-                    alert(r.respuesta);
-                    this.obtenerUsuarios();
-                    this.seleccion={
-                        id:0,
-                        nombre:"",
-                        nombre_completo:"",
-                        password:"",
-                        password_conf:""
-                     }
-                     this.actualizar = false;
-                }))
-                event.preventDefault();
+            .catch(err => console.error("Error=>", err))
+            .then(res => res.json().then(r=> {
+                alert(r.respuesta);
+                this.obtenerUsuarios();
+                this.seleccion={
+                    id:0,
+                    nombre:"",
+                    nombre_completo:"",
+                    password:"",
+                    password_conf:""
+                }
+                this.actualizar = false;
+            }))
+            event.preventDefault();
          },
-         post_usuarrio(){
-            fetch(`${$URL_API}lista_usuarios/Editar`, {
-                method: 'post',
-                credentials: 'same-origin',
-                body:'listo',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .catch(err => console.error("Error=>", err))
-                .then(res => res.json().then(r=> {
-                    alert(r.respuesta);
-                    this.obtenerUsuarios();
-                    this.seleccion={
-                        id:0,
-                        nombre:"",
-                        nombre_completo:"",
-                        password:"",
-                        password_conf:""
-                     }
-                     this.actualizar = false;
-                }))
-         }
     },
     computed:{
         comprobar_guardado(){
@@ -173,13 +161,13 @@ Vue.component("Usuarios",{
 Vue.component("Usuario",{
     props:["usuario"],
     template:`
-    <tr>
+    <tr v-if="usuario.estatus=='V'">
         <td>{{ usuario.id }}</td>
         <td> {{ usuario.nombre }}</td>
         <td> {{ usuario.nombre_completo }}</td>
         <td>
-            <i class="btn btn-danger fa fa-trash" style="float:right;margin-left:5px;" v-on:click="()=>Borrar(usuario)"> Borrar</i>
-            <i class="btn btn-info fa fa-edit" style="float:right;margin-left:5px;" v-on:click="()=>Editar(usuario)"> Editar</i>
+            <i class="btn btn-danger fa fa-trash" style="float:right;margin-left:5px;" v-on:click="()=>Borrar(usuario)"> Borrar ❌ </i>
+            <i class="btn btn-info fa fa-edit" style="float:right;margin-left:5px;" v-on:click="()=>Editar(usuario)"> Editar ✔️ </i>
         </td>
     </tr>
     `,
@@ -201,18 +189,21 @@ Vue.component("Usuario",{
         },
         eliminnar_por_id(id){
             console.log("Eliminar = ",id);
-            fetch(`${$URL_API}lista_usuarios/Borrar?id=${id}`, {
-                method: 'get',
+            fetch(`${$URL_API}/usuarios/api/`, {
+                method: 'PATCH',
                 credentials: 'same-origin',
+                body:JSON.stringify({
+                    id:id
+                }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-                .catch(err => console.error("Error=>", err))
-                .then(res => res.json().then(r=> {
-                    alert(r.respuesta);
-                    usuarios.obtenerUsuarios();
-                }))
+            .catch(err => console.error("Error=>", err))
+            .then(res => res.json().then(r=> {
+                alert(r.respuesta);
+                usuarios.obtenerUsuarios();
+            }))
         }
     }
 });
