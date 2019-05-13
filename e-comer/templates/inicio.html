@@ -28,6 +28,7 @@
       <a class="navbar-brand" style="color:#FFF;font-size: 18px;" href="/">
         <i class="fa fa-shopping-cart" style="font-size: 25px"></i> MyEcomer</a>
     </div>
+    {% if request.session.id_usuario > 0 %}
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="menu {% if request.path  == '/'  %}active{% else%} {% endif %}">
@@ -63,19 +64,13 @@
         </li>   
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        {% if request.session.id_usuario > 0 %}
-                   : 
-                <li><a style="color:#FFF" class="fa fa-user">   {{request.session.usuario}}</a></li>
-                <li class="{% if request.path  == '/usuarios/login/'  %}active{% else%} {% endif %}">
-                  <a style="color:#FFF;background: red" href="/usuarios/login">
-                    <i class="fa fa-sign-out"> Salir</i>.
-                  </a>
-                </li>
-                {% else %}
-                <li class="{% if request.path  == '/usuarios/login/'  %}active{% else%}disableLink{% endif %}">
-                  <a class="fa fa-login" href="/usuarios/login"> Inicio Sesion</a>
-                </li>
-            {% endif %}
+        <li><a style="color:#FFF" class="fa fa-user">   {{request.session.usuario}}</a></li>
+          <li class="{% if request.path  == '/usuarios/login/'  %}active{% else%} {% endif %}">
+            <a style="color:#FFF;background: red" href="/usuarios/login">
+              <i class="fa fa-sign-out"> Salir</i>.
+            </a>
+        </li>
+      {% endif %}
       </ul>
     </div>
   </div>
