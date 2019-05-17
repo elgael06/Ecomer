@@ -6,7 +6,7 @@ from django.http import JsonResponse
 
 from django.shortcuts import render
 
-from .models import Producto, Costo_producto, Clase_producto, Categoria_producto, Familia_producto
+from .models import Producto, Costo_producto, Clase_producto, Categoria_producto, Familia_producto,Foto_producto
 from ..Acceso import acceso
 from ..manejo_fecha import fecha_hoy
 
@@ -21,8 +21,26 @@ class ProductosViwe(APIView):
     def get(self, request):
 
         productos = Producto.objects.all()
+        data = []
+        for producto in  productos:
 
-        data = list( productos.values('id','descripcion','estatus', 'folio_familia','fecha','fecha_modificacion','usuario_creo','usuario_modifico'))
+            costo = Costo_producto.objects.filter(folio_producto=producto.id,estatus = "V")
+            data.append({
+                'id':producto.id,
+                'descripcion':producto.descripcion,
+                'estatus':producto.estatus,
+                'folio_familia':producto.folio_familia,
+                'fecha':producto.fecha,
+                'fecha_modificacion':producto.fecha_modificacion,
+                'usuario_creo':producto.usuario_creo,
+                'usuario_modifico':producto.usuario_modifico,
+                'costo' : costo[0].costo,
+                'venta' : costo[0].venta,
+                'margen' : costo[0].margen,
+                'iva' : costo[0].iva,
+            })
+
+        #data = list( productos.values('id','descripcion','estatus', 'folio_familia','fecha','fecha_modificacion','usuario_creo','usuario_modifico' ))
         
         return JsonResponse({"productos":data})
 
@@ -52,19 +70,19 @@ class ProductosViwe(APIView):
         id = request.data.get('id')
         descripcion = request.data.get('descripcion')
         folio_familia = request.data.get('folio_familia')
-        cambio_costo = request.data.get('cambio_costo')
         costo = request.data.get('costo')
         venta = request.data.get('venta')
         margen = request.data.get('margen')
         iva = request.data.get('iva')
 
-        Producto.filter(id = id).update(
+        Producto.objects.filter(id = id).update(
             descripcion = descripcion,
             folio_familia = folio_familia,
             fecha_modificacion = fecha_hoy(),
             usuario_modifico = request.session["id_usuario"],
             )
-        if cambio_costo==0:
+        costo_p = Costo_producto.objects.filter(folio_producto = id,estatus="V",costo = costo,venta = venta,margen = margen, iva = iva).exists()
+        if not costo_p:
             agregar_costo(id,costo,venta,margen,iva,request.session["id_usuario"])
 
         return JsonResponse({"producto":'Actualizado...'})
@@ -81,7 +99,9 @@ class ProductosViwe(APIView):
 
 class ClasesView(APIView):
     def get(self,request):
-        return JsonResponse({"Clases":'data'})
+        Clase = Clase_producto.objects.all()
+        data = list( Clase.values('id','Descripcion','estatus', 'fecha','fecha_modificacion','usuario_creo','usuario_modifico'))
+        return JsonResponse({"productos":data})
 
     def post(self,request):
         return JsonResponse({"Clases":'Guardado...'})
@@ -95,7 +115,9 @@ class ClasesView(APIView):
 
 class CategoriasView(APIView):
     def get(self,request):
-        return JsonResponse({"Categorias":'data'})
+        Clase = Clase_producto.objects.all()
+        data = list( Clase.values('id','Descripcion','estatus', 'fecha','fecha_modificacion','usuario_creo','usuario_modifico'))
+        return JsonResponse({"productos":data})
 
     def post(self,request):
         return JsonResponse({"Categorias":'Guardado...'})
@@ -109,7 +131,9 @@ class CategoriasView(APIView):
 
 class FamiliasView(APIView):
     def get(self,request):
-        return JsonResponse({"Familias":'data'})
+        Clase = Clase_producto.objects.all()
+        data = list( Clase.values('id','Descripcion','estatus', 'fecha','fecha_modificacion','usuario_creo','usuario_modifico'))
+        return JsonResponse({"productos":data})
 
     def post(self,request):
         return JsonResponse({"Familias":'Guardado...'})
@@ -120,11 +144,37 @@ class FamiliasView(APIView):
     def patch(self,request):
         return JsonResponse({"Familias":'Borrado...'})
 
+class FotosView(APIView):
+    def get(self,request):
+        id = request.GET.get('id')
+        fotos = Foto_producto.objects.filter(id_producto = id)
+        data = list( fotos.values('id','id_producto','foto'))
+        return JsonResponse({"fotos":data})
+
+    def post(self,request):
+        id = equest.data.get('id')
+        fotos = equest.data.get('fotos')
+        for foto in fotos:
+            f = Foto_producto(id_producto=id,foto=foto)
+            f.save()
+        
+        return JsonResponse({"foto":'Guardada...'})
+
+    def put(self,request):
+        id = equest.GET.get('id')
+        foto = equest.data.get('foto')
+        Foto_producto.objects.filter(id = id).update(foto= foto)
+        return JsonResponse({"foto":'Actualizada...'})
+
+    def patch(self,request):
+        Foto_producto.objects.filter(id=id).delete()
+        return JsonResponse({"foto":'Borrada...'})    
+
 
 
 ##Metodos
 def agregar_costo(id,costo,venta,margen,iva,id_usuario):
-    Costo_producto.filter(folio_producto = id).update(estatus = "C")
+    Costo_producto.objects.filter(folio_producto = id).update(estatus = "C")
 
     costo_prod = Costo_producto(
         folio_producto = id,
@@ -136,5 +186,6 @@ def agregar_costo(id,costo,venta,margen,iva,id_usuario):
         fecha_modificacion = fecha_hoy(),
         usuario_creo = id_usuario,
         usuario_modifico = id_usuario,
+        estatus = "V"
     )
     costo_prod.save()

@@ -3,14 +3,47 @@
 {% block title %}
      Productos
 {% endblock %}
-
+{% load staticfiles %}
+    {% load static %}
 {% block content %}
-<div class="panel panel-default">
+<div class="panel panel-default" id="productos">
      <div class="panel-heading">
-          <h4>Productos.</h4>
+          <h4>Producto.</h4>
+          <div class="row">
+               <div class="col-sm-12">
+                    <label>Descripcion</label>
+                    <textarea class="form-control" v-model="seleccion.descripcion" style="resize:none" placeholder="Descripcion..."></textarea>
+               </div>
+               <div class="col-sm-2">
+                    <label>Costo $:</label>
+                    <input type="number" class="form-control" v-on:keyup="venta" v-model="seleccion.costo" />
+               </div>
+               <div class="col-sm-2">
+                    <label>venta %:</label>
+                    <input type="number" class="form-control" v-on:keyup="margen" v-model="seleccion.venta" />
+               </div>
+               <div class="col-sm-2">
+                    <label>margen %:</label>
+                    <input type="number" class="form-control" v-on:keyup="venta" v-model="seleccion.margen" />
+               </div>
+               <div class="col-sm-2">
+                    <label>iva %:</label>
+                    <input type="number" class="form-control" v-model="seleccion.iva" />
+               </div>
+               <div class=" col-sm-4" style="margin-top:20px">
+                         <i class="btn btn-info">Clasificadores</i>
+                    <i class="btn btn-success" v-if="comprovar" @click="on_guardar">Guardar</i>
+                    <i class="btn btn-danger" @click="restablecer_parametros">Cancelar</i>
+               </div>
+          </div>
      </div>
       <div class="panel-body" style="height:410px">
-      
-      </div>
+          <label>Lista Productos :</label> 
+          <div style="overflow: auto;height: 360px;border: 1px rgb(118, 167, 246) solid;border-radius: 10px">
+               <Producto v-bind:productos="productos">
+               </Producto>
+          </div>
+     </div>
 </div>
+<script src="{% static 'src/js/productos/alta_productos.js' %}?1.0.1"></script>
 {% endblock %}
