@@ -21,6 +21,11 @@ class Foto_producto(models.Model):
     max_length=100000)
 
 
+class Codigo_producto(models.Model):
+    id_producto = models.IntegerField()
+    Codigo = models.CharField(max_length=20)
+
+
 class Clase_producto(models.Model):
     Descripcion = models.CharField(max_length=100) 
     estatus = models.CharField(max_length=1)

@@ -6,7 +6,7 @@ from django.http import JsonResponse
 
 from django.shortcuts import render
 
-from .models import Producto, Costo_producto, Clase_producto, Categoria_producto, Familia_producto,Foto_producto
+from .models import Producto, Costo_producto, Clase_producto, Categoria_producto, Familia_producto,Foto_producto,Codigo_producto
 from ..Acceso import acceso
 from ..manejo_fecha import fecha_hoy
 
@@ -152,25 +152,52 @@ class FotosView(APIView):
         return JsonResponse({"fotos":data})
 
     def post(self,request):
-        id = equest.data.get('id')
-        fotos = equest.data.get('fotos')
-        for foto in fotos:
-            f = Foto_producto(id_producto=id,foto=foto)
-            f.save()
+        id = request.data.get('id')
+        foto = request.data.get('foto')
+
+        f = Foto_producto(id_producto=id,foto=foto)
+        f.save()    
         
         return JsonResponse({"foto":'Guardada...'})
 
     def put(self,request):
-        id = equest.GET.get('id')
-        foto = equest.data.get('foto')
+        id = request.GET.get('id')
+        foto = request.data.get('foto')
         Foto_producto.objects.filter(id = id).update(foto= foto)
         return JsonResponse({"foto":'Actualizada...'})
 
     def patch(self,request):
-        Foto_producto.objects.filter(id=id).delete()
+        Foto_producto.objects.filter(id=request.data.get("id")).delete()
         return JsonResponse({"foto":'Borrada...'})    
 
+class CodigosView(APIView):
+    def get(self,request):
+        id = request.GET.get('id')
+        codigo = Codigo_producto.objects.filter(id_producto = id)
+        data = list( codigo.values('id','id_producto','Codigo'))
+        return JsonResponse({"Codigos":data})
 
+    def post(self,request):
+        id = request.data.get('id')
+        codigo = request.data.get('codigo')
+        respuesta = ""
+        estado = False
+        print("Codigo=>"+ str(codigo))
+        prod = Codigo_producto.objects.filter(Codigo = codigo) 
+        print( prod.exists())
+        if not prod.exists():
+            f = Codigo_producto(id_producto=id,Codigo=codigo)
+            f.save()    
+            respuesta = 'Guardada...'
+            estado = True
+        else :
+            respuesta = 'Codigo ya Existe...\n Codigo : '+str( prod[0].id )
+        return JsonResponse({"Codigo": respuesta, 'estado':estado})  
+
+    def patch(self,request):
+        Codigo_producto.objects.filter(id=request.data.get("id")).delete()
+        return JsonResponse({"codigo":'Borrada...'})
+        
 
 ##Metodos
 def agregar_costo(id,costo,venta,margen,iva,id_usuario):

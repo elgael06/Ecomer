@@ -17,6 +17,11 @@
     <script type="text/javascript" src="{% static 'src/lib/React/react.production.min.js' %}" ></script>-->
 </head>
 <body>
+
+<div class="modal_base" id="modal_load" style="font-size:35px;z-index:9999">
+  <i class="fa fa-circle-o-notch rotate"></i>
+</div>
+
 <nav class="navbar navbar-inverse navbar-fixed-top" >
   <div class="container-fluid">
     <div class="navbar-header" >
@@ -75,7 +80,7 @@
     </div>
   </div>
 </nav>
-<div class="container" id="contenedor" style="margin-top:60px" 
+<div class="container" id="contenedor" style="margin-top:90px" 
 style="background: #9fabb6;min-height: 94%">
     {% block content %}
       Aqui Va El Contenido...
@@ -88,7 +93,7 @@ style="background: #9fabb6;min-height: 94%">
 <script type="text/javascript" src="{% static 'src/lib/JQuery/jquery-3.4.1.min.js' %}" ></script>
     <script type="text/javascript" src="{% static 'src/lib/bootstrap/bootstrap.js' %}" ></script>
 </body>
-<link rel="stylesheet" type="text/css" href="{% static 'src/css/main.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'src/css/main.css' %}?1.0.0"/>
 <style>
  
 </style>
