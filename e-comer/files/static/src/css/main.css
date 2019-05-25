@@ -1,0 +1,229 @@
+body{
+    background: #f0f5f5;
+  }
+  nav{
+    padding:3px;
+    margin-left: 2px;
+    margin-right:2px;
+    margin-top: 1px;
+    background: #b0c1d1;
+    color: black;
+  }
+  .navbar-nav li:hover{
+    background: #3e4044;
+    border-radius: 5px;
+  }
+  .navbar-right>li{
+    border-radius: 5px;
+    height: 50px;
+  }
+  .navbar-right>li:hover{
+    background: #b5b7b9;
+  }
+  #contenedor>div{
+    min-height: 150px;
+    border: solid 1px #125391;
+  }
+  .active{
+    background: #c9d2db;
+    border-radius: 10px
+
+  }
+  .disableLink{
+    background: #FFF;
+    border: 2px solid #adb1af;
+  }
+
+
+/**modal**/
+.modal_base {
+    display: none;
+    position:fixed;
+    border-radius:0;
+    top:0px;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    z-index: 9997;
+    background: #9296998a;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+.modal_base>div {
+  width: 90%;
+}
+#modal_load{
+  z-index: 9999;
+  background: #f7f7f8c2;
+  color: #3e4044
+}
+thead {
+  display: normal;
+  position: sticky;
+  width: 100%;
+  top: 0px;
+  z-index: 990;
+}
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 990;
+}
+/*Add Rotation Animation*/
+@keyframes rotate {
+  from {
+      transform: rotate(0deg)
+  }
+
+  to {
+      transform: rotate(900deg)
+  }
+}
+
+@-webkit-keyframes rotate {
+  from {
+      -webkit-transform: rotate(0deg)
+  }
+
+  to {
+      -webkit-transform: rotate(900deg)
+  }
+}
+/*Rotation Animation*/
+.rotate {
+  -webkit-animation: 2s rotate linear infinite;
+  animation: 2s rotate linear infinite;
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  margin-right: 10px;
+}
+/* Add Zoom Animation */
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+  from {
+      -webkit-transform: scale(.2)
+  }
+
+  to {
+      -webkit-transform: scale(1)
+  }
+}
+
+@keyframes animatezoom {
+  from {
+      transform: scale(.2)
+  }
+
+  to {
+      transform: scale(1)
+  }
+}
+
+/*efecto botones*/
+.btn {
+  margin-left: 1px;
+  margin-right: 1px;
+}
+/* Boostrap Buttons Styling */
+/*
+.btn-default {
+  color: rgba(108, 88, 179, 0.75);
+  letter-spacing: 1px;
+  line-height: 15px;
+  border: 2px solid rgba(108, 89, 179, 0.75);
+  border-radius: 40px;
+  background: transparent;
+  transition: all 0.3s ease 0s;
+}
+
+.btn-default:hover {
+  color: #FFF;
+  background: rgba(108, 88, 179, 0.75);
+  border: 2px solid rgba(108, 89, 179, 0.75);
+}
+
+.btn-primary {
+  color: rgba(58, 133, 191, 0.75);
+  letter-spacing: 1px;
+  line-height: 15px;
+  border: 2px solid rgba(58, 133, 191, 0.75);
+  border-radius: 40px;
+  background: transparent;
+  transition: all 0.3s ease 0s;
+}
+
+.btn-primary:hover {
+  color: #FFF;
+  background: rgba(58, 133, 191, 0.75);
+  border: 2px solid rgba(58, 133, 191, 0.75);
+}
+
+.btn-success {
+  color: rgba(103, 192, 103, 0.75);
+  letter-spacing: 1px;
+  line-height: 15px;
+  border: 2px solid rgba(103, 192, 103, 0.75);
+  border-radius: 40px;
+  background: transparent;
+  transition: all 0.3s ease 0s;
+}
+
+.btn-success:hover {
+  color: #FFF;
+  background: rgb(103, 192, 103, 0.75);
+  border: 2px solid rgb(103, 192, 103, 0.75);
+}
+
+.btn-info {
+  color: rgba(91, 192, 222, 0.75);
+  letter-spacing: 1px;
+  line-height: 15px;
+  border: 2px solid rgba(91, 192, 222, 0.75);
+  border-radius: 40px;
+  background: transparent;
+  transition: all 0.3s ease 0s;
+}
+
+.btn-info:hover {
+  color: #FFF;
+  background: rgba(91, 192, 222, 0.75);
+  border: 2px solid rgba(91, 192, 222, 0.75);
+}
+
+.btn-warning {
+  color: rgba(240, 173, 78, 0.75);
+  letter-spacing: 1px;
+  line-height: 15px;
+  border: 2px solid rgba(240, 173, 78, 0.75);
+  border-radius: 40px;
+  background: transparent;
+  transition: all 0.3s ease 0s;
+}
+
+.btn-warning:hover {
+  color: #FFF;
+  background: rgb(240, 173, 78, 0.75);
+  border: 2px solid rgba(240, 173, 78, 0.75);
+}
+
+.btn-danger {
+  color: rgba(217, 83, 78, 0.75);
+  letter-spacing: 1px;
+  line-height: 15px;
+  border: 2px solid rgba(217, 83, 78, 0.75);
+  border-radius: 40px;
+  background: transparent;
+  transition: all 0.3s ease 0s;
+}
+
+.btn-danger:hover {
+  color: #FFF;
+  background: rgba(217, 83, 78, 0.75);
+  border: 2px solid rgba(217, 83, 78, 0.75);
+}
+*/
