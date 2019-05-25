@@ -46,6 +46,9 @@
               <li class="{% if request.path  == '/usuarios/'  %}active{% else%} {% endif %}">
                 <a class="fa fa-users" href="/usuarios"> Usuarios</a>
               </li>
+              <li class="{% if request.path  == '/Compras/proveedores/'  %}active{% else%} {% endif %}">
+                <a class="fa fa-users" href="/Compras/proveedores"> Proveedores</a>
+              </li>
             </ul>
         </li>   
         <li class="dropdown">
@@ -61,6 +64,9 @@
                 </li>
                 <li class="{% if request.path  == '/Productos/'  %}active{% else%} {% endif %}">
                   <a class="fa fa-cubes" href="/Productos"> Productos</a>
+                </li>
+                <li class="{% if request.path  == '/Inventario/'  %}active{% else%} {% endif %}">
+                  <a class="fa fa-truck" href="/Inventario"> Inventario</a>
                 </li>
               </ul>
         </li>  
@@ -91,7 +97,7 @@ style="background: #9fabb6;min-height: 94%">
 </footer>
 
 <script type="text/javascript" src="{% static 'src/lib/JQuery/jquery-3.4.1.min.js' %}" ></script>
-    <script type="text/javascript" src="{% static 'src/lib/bootstrap/bootstrap.js' %}" ></script>
+<script type="text/javascript" src="{% static 'src/lib/bootstrap/bootstrap.js' %}" ></script>
 </body>
 <link rel="stylesheet" type="text/css" href="{% static 'src/css/main.css' %}?1.0.0"/>
 <style>

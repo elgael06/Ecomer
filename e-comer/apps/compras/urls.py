@@ -1,8 +1,10 @@
 
 from django.urls import path
 
-from . import views
+from .views import index,proveedores,ProveedorView
 
 urlpatterns =[
-    path('',views.index,name='compras'),
+    path('',index,name='compras'),
+    path('proveedores',proveedores,name='proveedores'),
+    path('proveedores/api',ProveedorView.as_view()),
 ]
