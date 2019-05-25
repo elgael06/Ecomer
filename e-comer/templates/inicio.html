@@ -5,14 +5,17 @@
 <head>
     <meta charset="UTF-7">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'src/lib/font/css/font-awesome.css' %}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}My Sistema {% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'src/lib/bootstrap/bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'src/lib/font-awesome/css/font-awesome.min.css' %}">
+    <!--<link rel="stylesheet" type="text/css" href="{% static 'src/lib/custom.css' %}">-->
+
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.png' %}"/>
 
     
     <script type="text/javascript" src="{% static 'src/lib/vue/vue_.js'%}" ></script>
+    <script type="text/javascript" src="{% static 'src/lib/modernizr-2.8.3.js'%}" ></script>
    <!--  <script type="text/javascript" src="{% static 'src/lib/React/react-dom.production.min.js' %}" ></script>
     <script type="text/javascript" src="{% static 'src/lib/React/react.production.min.js' %}" ></script>-->
 </head>
@@ -47,7 +50,7 @@
                 <a class="fa fa-users" href="/usuarios"> Usuarios</a>
               </li>
               <li class="{% if request.path  == '/Compras/proveedores/'  %}active{% else%} {% endif %}">
-                <a class="fa fa-users" href="/Compras/proveedores"> Proveedores</a>
+                <a class="fa fa-chain" href="/Compras/proveedores"> Proveedores</a>
               </li>
             </ul>
         </li>   

@@ -8,7 +8,7 @@ from django.shortcuts import render
 
 from ..Acceso import acceso
 from ..manejo_fecha import fecha_hoy
-from ..productos.models import Producto 
+from ..productos.models import Producto ,Codigo_producto,Costo_producto
 
 # Create your views here.
 from .models import Proveedor,Orden,Productos_orden
@@ -61,7 +61,12 @@ class ProveedorView(APIView):
 
 class OrdenView(APIView):
     def get(self, request):
-        data ={}
+        data = None
+        id = request.GET.get("id")
+        if id == 0 :
+              data = Obtener_ordenes()
+        else :
+            data  = Obtener_orden(id)
         return JsonResponse({"orden":data})
 
     def post(self, request):
@@ -74,6 +79,52 @@ class OrdenView(APIView):
         data = {}
         return JsonResponse({"orden":data})
 
+class Producto_orden(APIView):
+    def get(self, request):
+        id = request.GET.get("id")
+        print(id)
+        producto = self.existe(id)
+        data = {
+            'id':'',
+            'descripcion':'',
+            'costo':'',
+            'venta':'',
+            'margen':'',
+            'iva':'',
+            'cantidad':'',
+            'total':'',
+        }
+        if producto:
+            costo_p = self.costo(producto.id)
+            if costo_p:
+                data = {
+                    'id':producto.id,
+                    'descripcion':producto.descripcion,
+                    'costo':costo_p.costo,
+                    'venta':costo_p.venta,
+                    'margen':costo_p.margen,
+                    'iva':costo_p.iva,
+                    'cantidad':1,
+                    'total':costo_p.costo,
+                }
+        return JsonResponse({"producto":data})
+
+    def existe(self,id):
+        print("Existe...")
+        prod = Producto.objects.filter(id=id,estatus="V")
+        if not prod.exists():
+            id_alterno = Codigo_producto.objects.filter(Codigo=id)
+            if id_alterno.exists():
+                 prod = Producto.objects.filter(id=id_alterno[0].id_producto,estatus="V")
+            else:
+                prod =[None]
+        return prod[0]
+
+    def costo(self,id):
+        costo = Costo_producto.objects.filter(folio_producto=id, estatus="V")
+        if costo.exists():
+            return costo[0]
+        return None
 
 ###Proveedores
 def Obtener_proveedor(id):
