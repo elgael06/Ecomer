@@ -173,7 +173,6 @@ Vue.component('modal-orden',{
                  })
                 .then(res => res.json()
                     .then(respuesta => {
-                    this.seleccion.id ='';
                     if( respuesta.producto.id){
                             let index = this.productos.findIndex(e=>e.id== respuesta.producto.id);
                             if(index ===-1)
@@ -187,7 +186,10 @@ Vue.component('modal-orden',{
                             }
                             this.actualizar_datos();
                         }
-                    document.querySelector("#modal_load").style.display="none";
+                        else 
+                        alert(`Codigo : ${this.seleccion.id}\n No Relacionado A producto !!!`)
+                    document.querySelector("#modal_load").style.display="none";                    
+                    this.seleccion.id ='';
                     }).catch(e=>{
                         console.error("Error=>", e);
                         alert("Codigo No Relacionado A producto !!!")
@@ -202,8 +204,8 @@ Vue.component('modal-orden',{
         },
     },
 });
-
-new Vue({
+ 
+let root = new Vue({
     el:'#root',
     data() {
         return {
@@ -254,5 +256,24 @@ new Vue({
                     document.querySelector("#modal_load").style.display="none";
                 }));
         },
+        Guardar_productos(){
+            document.querySelector("#modal_load").style.display="flex";
+            fetch(`productos/api`, {
+                method: 'post',
+                credentials: 'same-origin',
+                body:JSON.stringify({
+                    id_orden:this.orden.id,
+                    productos: this.productos,
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .catch(err => console.error("Error=>", err))
+                .then(res => res.json().then(respuesta => {
+                  alert(respuesta.Productos)
+                    document.querySelector("#modal_load").style.display="none";
+                }));
+        }
     },
 });

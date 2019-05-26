@@ -33,6 +33,7 @@ class Orden(models.Model):
     
 
 class Productos_orden(models.Model):
+    folio_orden =  models.IntegerField()
     folio_producto = models.IntegerField()
     costo = models.FloatField()
     venta = models.FloatField()

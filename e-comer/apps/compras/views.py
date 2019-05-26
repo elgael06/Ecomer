@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import JsonResponse
+import json
 
 from django.shortcuts import render
 
@@ -63,21 +64,38 @@ class OrdenView(APIView):
     def get(self, request):
         data = None
         id = request.GET.get("id")
-        if id == 0 :
-              data = Obtener_ordenes()
-        else :
+        if id :
             data  = Obtener_orden(id)
+        else :
+              data = Obtener_ordenes()
         return JsonResponse({"orden":data})
 
     def post(self, request):
         id = request.data.get("id")
-        data = {}
+        Folio_proveedor = request.data.get("Folio_proveedor")
+        Total = request.data.get("Total")
+        estatus = request.data.get("estatus")
+        Descripcion = request.data.get("Descripcion")
+        productos = request.data.get("productos")
+        proveedor = request.data.get("proveedor")
+        usuario = request.session["id_usuario"]
+
+        data = {
+            'folio':0,
+            'estatus':'',
+        }
+        if id>0 :
+            data['folio']  = guardar_ordenes(Folio_proveedor,Total,Descripcion,estatus,productos,proveedor,usuario)
+            data[ 'estatus'] = 'Guardado...'
+        else :
+            data['folio'] = Obtener_ordenes(id,Folio_proveedor,Total,Descripcion,estatus,productos,proveedor,usuario)
+            data[ 'estatus'] = 'Actualizado...'
         return JsonResponse({"orden":data})
             
     def put(self, request):
         id = request.data.get("id")
         data = {}
-        return JsonResponse({"orden":data})
+        return JsonResponse({"ordenes":data})
 
 class Producto_orden(APIView):
     def get(self, request):
@@ -109,6 +127,16 @@ class Producto_orden(APIView):
                 }
         return JsonResponse({"producto":data})
 
+    def post(self, request):
+        id_orden = request.data.get("id_orden")
+        productos = json.loads(json.dumps( request.data.get("productos")))
+
+        Productos_orden.objects.filter(folio_orden=id_orden).delete()
+
+        for prod in productos:
+            self.guardar(id_orden=id_orden,producto=prod)
+        return JsonResponse({"Productos":"ok"})
+
     def existe(self,id):
         print("Existe...")
         prod = Producto.objects.filter(id=id,estatus="V")
@@ -126,6 +154,18 @@ class Producto_orden(APIView):
             return costo[0]
         return None
 
+    def guardar(self,id_orden,producto):
+        print(producto)
+        Productos_orden(
+            folio_orden = id_orden,
+            folio_producto = producto['id'],
+            costo = producto['costo'],
+            venta = producto['venta'],
+            iva = producto['iva'],
+            margen = producto['margen'],
+            Cantidad = producto['cantidad'],
+            Total = producto['total'],
+        ).save()
 ###Proveedores
 def Obtener_proveedor(id):
     data = {'Id':0,
@@ -253,49 +293,28 @@ def Obtener_ordenes():
         })
     return {'lista':data}
 
-def guardar_ordenes(Folio_proveedor,productos,Total,Descripcion,usuario):
-     Orden(
-         Folio_proveedor=Folio_proveedor,
-         productos=productos,
-         Total=Total,
-         Descripcion=Descripcion,
-         estatus='V',
-         usuario_creo=usuario,
-         usuario_modifico=usuario,
-    ).save()
+def guardar_ordenes(Folio_proveedor,Total,Descripcion,estatus,productos,proveedor,usuario):
+    ord =  Orden(
+         Folio_proveedor = Folio_proveedor,
+        productos =productos,
+        Total = Total,
+        Descripcion = Descripcion,
+        estatus = estatus,
+        fecha = fecha_hoy,
+        fecha_modificacion =fecha_hoy,
+        usuario_creo =usuario,
+        usuario_modifico =usuario,
+    )
+    ord.save()
+    return ord.id
 
-def actualizar_ordenes(id,productos,Total,estatus,usuario):
+def actualizar_ordenes(id,Folio_proveedor,Total,Descripcion,estatus,productos,proveedor,usuario):
     Orden.objects.filter(id=id).update(
-        productos=productos,
-         Total=Total,
-         Descripcion=Descripcion,
-         estatus=estatus,
-         usuario_modifico=usuario,
+            Folio_proveedor = Folio_proveedor,
+            productos =productos,
+            Total = Total,
+            Descripcion = Descripcion,
+            estatus = estatus,
+            fecha_modificacion =fecha_hoy,
+            usuario_modifico =usuario,
     )
-
-def finalizar_ordenes(id,productos,Total,estatus,usuario,lista_productos):
-     Orden.objects.filter(id=id).update(
-        productos=productos,
-         Total=Total,
-         Descripcion=Descripcion,
-         estatus='F',
-         usuario_modifico=usuario,
-    )
-    #for producto in lista_productos:
-     #   Producto.objects.filter(id=producto['id']).update(
-      #      costo=producto['costo'],
-       # )
-
-###Productos Orden
-def Obtener_productos_orden(id):
-    pass
-
-def Obtener_productos_orden():
-    pass
-
-def guardar_productos_orden():
-    pass
-
-def actualizar_productos_orden():
-    pass
-
