@@ -1,12 +1,16 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>tienda</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
-</html>
+
+
+{% extends "inicio.html" %}
+{% block title %}
+     Tienda
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-default" id="app">
+  
+</div>
+
+{% load staticfiles %}
+    {% load static %}
+<script type="text/javascript" src="{% static 'dist/tienda/bundle.js'%}" ></script>
+{% endblock %}
