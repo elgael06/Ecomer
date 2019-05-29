@@ -20,6 +20,52 @@ class Cliente(models.Model):
     usuario_modifico = models.IntegerField() 
 
 
+## Tiquet de venta 
+class Asignacion_caja(models.Model):
+    id_usuario = models.IntegerField()
+    fondo_caja = models.FloatField()
+    usuario_creo = models.IntegerField()
+    usuario_modifico = models.IntegerField()
+    estatus = models.CharField(max_length=1)
+    fecha = models.DateField(auto_now_add=True)
+    fecha_modificacion = models.DateField(auto_now=True)
+
+
+class Ticket(models.Model):
+    folio_asignacion = models.IntegerField()
+    productos = models.IntegerField()
+    total = models.FloatField()
+    descuento = models.FloatField()
+    folio_cliente =  models.IntegerField()
+    estatus = models.CharField(max_length=1)
+    fecha = models.DateField(auto_now_add=True)
+    hora = models.DateTimeField(auto_now_add=True)
+    tipo_pago = models.CharField(max_length=2)
+
+
+class Producto_ticket(models.Model):
+    folio_ticket = models.IntegerField()
+    folio_producto = models.IntegerField()
+    camtidad = models.IntegerField()
+    total = models.FloatField()
+    descuento = models.FloatField()
+
+class Asignacion_caja(models.Model):
+    folio_asignacion = models.IntegerField()
+    efectivo = models.FloatField()
+    cheques = models.FloatField()
+    vouchers = models.FloatField()
+    total = models.FloatField()
+    total_corte = models.FloatField()
+    diferencia = models.FloatField()
+    usuario_creo = models.IntegerField()
+    usuario_modifico = models.IntegerField()
+    estatus = models.CharField(max_length=1)
+    fecha = models.DateField(auto_now_add=True)
+    fecha_modificacion = models.DateField(auto_now=True)
+
+#pedidos de Producos 
+
 class Pedido(models.Model):
     usuario_creo = models.IntegerField()
     usuario_modifico = models.IntegerField()

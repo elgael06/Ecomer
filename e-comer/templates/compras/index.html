@@ -14,13 +14,19 @@
                <i class="btn btn-success fa fa-plus" @click="on_nueva"> Nueva Compra</i>
           </div>
      </div>
-      <div class="panel-body" style="height:410px">
-
+      <div class="panel-body" style="">
+          <div style="overflow:autoheight:410px">
+               <orden-lista v-for="item in lista_ordenes"
+                    v-bind:orden="item"
+                    v-bind:seleccion="on_editar"
+               />          
+          </div>
       </div>
       <modal-orden
           v-bind:orden="orden"
           v-bind:productos="productos"
           v-bind:lista_proveedores="lista_proveedores"
+          v-bind:Guardar_orden="Guardar_orden"
       />
 </div>
 

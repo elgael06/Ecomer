@@ -4,7 +4,7 @@
 
 
  Vue.component('producto-lista',{
-     props:['producto','eliminar'],
+     props:['producto','eliminar','cambio'],
      template:`
         <div class="panel panel-info">
             <div class="panel-heading">
@@ -46,23 +46,25 @@
         on_cantidad(){
             let {cantidad,costo} =this.producto;
             this.producto.total = cantidad* costo;
+            this.cambio();
         },
         on_costo(){
             let {cantidad,costo} =this.producto;
             this.producto.total = cantidad* costo;
+            this.cambio();
         },
     },
  });
 
 Vue.component('modal-orden',{
-    props:['orden','productos','lista_proveedores'],
+    props:['orden','productos','lista_proveedores','Guardar_orden'],
     template:`
         <div class="modal_base" id="moda_orden">
             <div  :class="tipo_modal">
                 <div class="panel-heading">
                     <i class="fa fa-close" style="float:right" @click="cerrar"></i>
                     <label>
-                        <span v-if="orden.id>0">Editar : orden.id </span>
+                        <span v-if="orden.id>0">Editar : {{orden.id}} </span>
                         <span v-else>Nueva</span>
                         Orden Compra
                     </label>
@@ -101,7 +103,7 @@ Vue.component('modal-orden',{
                             </form>                             
                             <div class="col-sm-5">      
                             <i class="btn btn-info fa fa-search" style="margin-top:20px" > Buscar</i>
-                                <i class="btn btn-success fa fa-save" style="margin-top:20px" > Guardar</i>
+                                <i class="btn btn-success fa fa-save" style="margin-top:20px" v-if="comprobar" @click="Guardar_orden" > Guardar</i>
                                 <i class="btn btn-danger fa fa-close" style="float:right;margin-top:20px" > Cancelar</i>
                             </div>
                     </div>
@@ -109,7 +111,7 @@ Vue.component('modal-orden',{
                 <div class="panel-body">
                     <label>Productos</label>
                     <div style="height:320px;overflow:auto">
-                            <producto-lista v-for="item in productos"  v-bind:producto="item" v-bind:eliminar="eliminar"  />
+                            <producto-lista v-for="item in productos" v-bind:cambio="actualizar_datos" v-bind:producto="item" v-bind:eliminar="eliminar"  />
                     </div>
                 </div>
             </div>
@@ -146,6 +148,7 @@ Vue.component('modal-orden',{
             if(confirm(`Eliminar el Producto ${seleccion.descripcion} ?`)){
                 let indice = this.productos.findIndex(e=>e.id == seleccion.id)
                 this.productos.splice(indice,1);
+                this.actualizar_datos();
             }
         },
         actualizar_datos(){
@@ -153,7 +156,7 @@ Vue.component('modal-orden',{
             this.orden.productos = this.productos.length || 0;
             
             for(p of  this.productos){
-                total+= p.total;
+                total+= parseFloat(p.total);
             }
             this.orden.Total = total;
         },
@@ -178,11 +181,13 @@ Vue.component('modal-orden',{
                             if(index ===-1)
                                 this.productos.push(respuesta.producto);
                             else{
-                            let  prod =  this.productos.filter(e=>e.id== respuesta.producto.id);
-                            for(p of prod){
-                                p.cantidad += respuesta.producto.cantidad;
-                                p.total += respuesta.producto.total;
-                            }
+                                let  prod =  this.productos.filter(e=>e.id== respuesta.producto.id);
+                                for(p of prod){
+                                    p.cantidad = parseFloat(p.cantidad);
+                                    p.total = parseFloat(p.total);
+                                    p.cantidad += parseFloat(respuesta.producto.cantidad);
+                                    p.total += parseFloat(respuesta.producto.total);
+                                }
                             }
                             this.actualizar_datos();
                         }
@@ -202,21 +207,78 @@ Vue.component('modal-orden',{
         tipo_modal(){
             return this.orden.id>0?"panel panel-primary animate":"panel panel-default animate";
         },
+        comprobar(){
+            return this.orden.Folio_proveedor && this.orden.productos>0
+        }
     },
 });
  
+Vue.component("orden-lista",{
+    props:['orden','seleccion'],
+    template:`
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <label> ID ORDEN: {{orden.id}} </label>
+            <i class="btn btn-link" @click="seleccion(orden)" v-if="estatus" style="float:right">Seleccionar</i>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Proveedor :</label>
+                    <label class="form-control">{{orden.proveedor}}</label>
+                </div>
+                <div class="col-sm-4">
+                    <label>Descripcion :</label>
+                    <label class="form-control">{{orden.Descripcion}}</label>
+                </div>
+                <div class="col-sm-2">
+                    <label> Fecha creacion :{{orden.fecha}}</label>
+                    <label> Modificacion :{{orden.fecha_modificacion}}</label>
+                </div> 
+                <div class="col-sm-2">
+                <label> Productos :{{orden.productos}}</label>
+                <label> Total :$ {{orden.Total}}</label>
+                </div>               
+                <div class="col-sm-3">
+                    <label>Estatus</label>
+                    <select disabled class="form-control" v-model="orden.estatus">
+                        <option value="V">Vigente</option>
+                        <option value="C">Cancelada</option>
+                        <option value="F">Finalizo</option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <label>Creo</label>
+                    <i class="form-control">{{orden.usuario_creo}}</i>
+                </div>
+                <div class="col-sm-4">
+                    <label>Modifico</label>
+                    <i class="form-control">{{orden.usuario_modifico}}</i>
+                </div>
+            </div>
+        </div>
+    </div>
+    `,
+    computed:{
+        estatus(){
+            return this.orden.estatus != "F"
+        }
+    }
+
+});
+
 let root = new Vue({
     el:'#root',
     data() {
         return {
             orden:{
                 'id':0,
-            'Folio_proveedor':0,
-            'proveedor':'',
-            'productos':0,
-            'Total':0.0,
-            'Descripcion':'',
-            'estatus':'V',
+                'Folio_proveedor':0,
+                'proveedor':'',
+                'productos':0,
+                'Total':0.0,
+                'Descripcion':'',
+                'estatus':'V',
             },
             productos:[],
             lista_ordenes:[],
@@ -225,21 +287,53 @@ let root = new Vue({
     },
     created() {
         console.log("Incia...");
+        this.obtener_compras();
     },
     methods: {
         on_nueva(){
             this.orden = {
                 'id':0,
-            'Folio_proveedor':0,
-            'proveedor':'',
-            'productos':0,
-            'Total':0.0,
-            'Descripcion':'',
-            'estatus':'V',
+                'Folio_proveedor':0,
+                'proveedor':'',
+                'productos':0,
+                'Total':0.0,
+                'Descripcion':'',
+                'estatus':'V',
             };
             this.productos =[];
             this.obtener_proveedores();
             document.querySelector("#moda_orden").style.display="flex";
+        },
+        on_editar(seleccion){
+            console.log(seleccion);
+            this.obtener_productos(seleccion.id);
+            this.orden = {
+                'id':seleccion.id,
+                'Folio_proveedor':seleccion.Folio_proveedor,
+                'proveedor':seleccion.proveedor,
+                'productos':seleccion.productos,
+                'Total':seleccion.Total,
+                'Descripcion':seleccion.Descripcion,
+                'estatus':seleccion.estatus,
+            };
+            this.obtener_proveedores();
+            document.querySelector("#moda_orden").style.display="flex";
+        },
+        obtener_compras(){
+            //Compras
+            document.querySelector("#modal_load").style.display="flex";
+            fetch(`ordenes/api`, {
+                method: 'get',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .catch(err => console.error("Error=>", err))
+                .then(res => res.json().then(respuesta => {
+                    this.lista_ordenes = respuesta.orden.lista
+                    document.querySelector("#modal_load").style.display="none";
+                }));
         },
         obtener_proveedores(){
             document.querySelector("#modal_load").style.display="flex";
@@ -256,10 +350,49 @@ let root = new Vue({
                     document.querySelector("#modal_load").style.display="none";
                 }));
         },
-        Guardar_productos(){
+        obtener_productos(id){
             document.querySelector("#modal_load").style.display="flex";
             fetch(`productos/api`, {
                 method: 'post',
+                credentials: 'same-origin',
+                body:JSON.stringify({id_orden:id}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .catch(err =>{
+                        console.error("Error=>", err)
+                        document.querySelector("#modal_load").style.display="none";                    })
+                .then(res => res.json().then(respuesta => {
+                   console.log(respuesta.productos)
+                   this.productos = respuesta.productos;
+                    document.querySelector("#modal_load").style.display="none";
+                }));  
+        },
+        Guardar_orden(){
+            document.querySelector("#modal_load").style.display="flex";
+            fetch(`ordenes/api`, {
+                method: 'post',
+                credentials: 'same-origin',
+                body:JSON.stringify(this.orden),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .catch(err =>{
+                        console.error("Error=>", err)
+                        document.querySelector("#modal_load").style.display="none";                    })
+                .then(res => res.json().then(respuesta => {
+                    this.orden.id= respuesta.orden.folio;
+                    this.Guardar_productos();
+                    alert(respuesta.orden.estatus)
+                    document.querySelector("#modal_load").style.display="none";
+                }));  
+        },
+        Guardar_productos(){
+            document.querySelector("#modal_load").style.display="flex";
+            fetch(`productos/api`, {
+                method: 'put',
                 credentials: 'same-origin',
                 body:JSON.stringify({
                     id_orden:this.orden.id,
@@ -272,7 +405,10 @@ let root = new Vue({
                 .catch(err => console.error("Error=>", err))
                 .then(res => res.json().then(respuesta => {
                   alert(respuesta.Productos)
-                    document.querySelector("#modal_load").style.display="none";
+                  document.querySelector("#modal_load").style.display="none";
+                  this.obtener_proveedores();
+                  this.obtener_compras();
+                  document.querySelector("#moda_orden").style.display="none";
                 }));
         }
     },
