@@ -9,3 +9,5 @@ migraciones
     python manage.py makemigrations
     python manage.py migrate
 
+desarrollo 
+webpack --watch --color
