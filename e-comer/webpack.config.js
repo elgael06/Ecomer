@@ -105,13 +105,3 @@ module.exports = [
     ]
   }
 ]
-
-
-/*
-
-   {
-    path: __dirname + '/dist/indicadores/surtido_embarque',
-    filename: 'bundle.js'
-  }
-
-*/
