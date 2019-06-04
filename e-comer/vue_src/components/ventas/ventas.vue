@@ -1,12 +1,7 @@
 <template>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <strong>{{title}}</strong>
-    </div>
-    <div class="panel-body">
-        <Caja />
-        <Asignacion />
-    </div>
+<div class="panel panel-default">  
+    <Caja />
+    <Asignacion />
 </div>
 </template>
 
