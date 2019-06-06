@@ -15982,7 +15982,7 @@ a.close.disabled {
 }
 
 .bg-primary {
-    background-color: #3871f6 !important;
+    background-color: #4c83db !important;
 }
 
 a.bg-primary:hover,
@@ -23098,7 +23098,7 @@ dl li {
 }
 
 .content-wrapper {
-    background: #f3f3f3;
+    background: #f2f2f282;
     padding: 2.1rem 1.04rem;
     width: 100%;
     -webkit-flex-grow: 1;
@@ -23342,7 +23342,7 @@ dl li {
 }
 
 .navbar .navbar-brand-wrapper {
-    background: #ffffff;
+    background: #4d8cec;
     border-bottom: 1px solid #e3e3e3;
     transition: width 0.25s ease, background 0.25s ease;
     -webkit-transition: width 0.25s ease, background 0.25s ease;
@@ -23351,6 +23351,7 @@ dl li {
     width: 257px;
     height: 60px;
     border-right: 1px solid #e3e3e3;
+    color: #FFF
 }
 
 .navbar .navbar-brand-wrapper .navbar-brand-inner-wrapper {
@@ -23415,12 +23416,12 @@ dl li {
 }
 
 .navbar .navbar-menu-wrapper {
-    background: #ffffff;
+    background: #4d8cec;
     transition: width 0.25s ease;
     -webkit-transition: width 0.25s ease;
     -moz-transition: width 0.25s ease;
     -ms-transition: width 0.25s ease;
-    color: #9b9b9b;
+    color: #f9f9f9;
     padding-left: 1.062rem;
     padding-right: 1.062rem;
     width: calc(100% - 257px);
@@ -23843,7 +23844,7 @@ dl li {
     }
 
     .sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link:hover .menu-title {
-        background: #ffffff;
+        background: #e8f6fe63;
     }
 
     .sidebar-icon-only .sidebar .nav .nav-item.hover-open .collapse,
