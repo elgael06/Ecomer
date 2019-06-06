@@ -7,15 +7,15 @@
     {% load static %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'src/css/compras/orden.css' %}?1.0.0"/>
-<div class="panel panel-default"  id="root">
-     <div class="panel-heading">
+<div class="card"  id="root">
+     <div class="card-header  bg-primary text-white">
           <label>Compras.</label>
           <div style="float:right">
                <i class="btn btn-success fa fa-plus" @click="on_nueva"> Nueva Compra</i>
           </div>
      </div>
-      <div class="panel-body" style="">
-          <div style="overflow:autoheight:410px">
+      <div class="card-body" style="">
+          <div style="overflow:auto;height:410px">
                <orden-lista v-for="item in lista_ordenes"
                     v-bind:orden="item"
                     v-bind:seleccion="on_editar"

@@ -14,7 +14,7 @@ Vue.component("lista-proveedores",{
     <div style="overflow:auto;height:390px"lista_proveedores="">
     <table class="table">
          <thead >
-              <tr class="warning">
+              <tr class="table-warning">
                    <th>ID</th>
                    <th>Nombre</th>
                    <th>Representante</th>
@@ -54,7 +54,7 @@ Vue.component('modal-proveedor',{
     template:`
     <div class="modal_base" id="modal_proveedor">
         <div :class="tipo_modal">
-            <div class="panel-heading">
+            <div class="card-header">
                 <i class="fa fa-close" style="float:right" @click="cerrar"></i>
                 <label>
                     <span v-if="proveedor.Id>0">Editar</span>
@@ -62,7 +62,7 @@ Vue.component('modal-proveedor',{
                     Proveedor
                 </label>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <div class="row">
                     <div class="col-sm-7">
                         <label>Nombre</label>
@@ -104,7 +104,7 @@ Vue.component('modal-proveedor',{
     },
     computed: {
         tipo_modal(){
-            return this.proveedor.Id>0?"panel panel-primary animate":"panel panel-default animate";
+            return this.proveedor.Id>0?"card primary animate":"card default animate";
         },
         comprobar(){
             return this.proveedor.Nombre && this.proveedor.Email && this.proveedor.RFC && this.proveedor.Representante && this.proveedor.Telefono && this.proveedor.Descripcion;
