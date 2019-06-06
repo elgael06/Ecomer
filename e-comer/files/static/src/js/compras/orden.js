@@ -6,13 +6,13 @@
  Vue.component('producto-lista',{
      props:['producto','eliminar','cambio'],
      template:`
-        <div class="panel panel-info">
-            <div class="panel-heading">
+        <div class="card">
+            <div class="card-header bg-warning text-white">
                 <i class="fa fa-close" style="float:right" @click="eliminar(producto)"></i>
                 <label>ID: {{producto.id}}</label>
                 <label> {{producto.descripcion}}</label>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <div class="row">
                     <div class="col-sm-2"  style="max-width:160px;display:inline-block">
                         <label>cantidad</label>
@@ -60,8 +60,8 @@ Vue.component('modal-orden',{
     props:['orden','productos','lista_proveedores','Guardar_orden'],
     template:`
         <div class="modal_base" id="moda_orden">
-            <div  :class="tipo_modal">
-                <div class="panel-heading">
+            <div  class="card  animate">
+                <div :class="tipo_modal">
                     <i class="fa fa-close" style="float:right" @click="cerrar"></i>
                     <label>
                         <span v-if="orden.id>0">Editar : {{orden.id}} </span>
@@ -69,7 +69,7 @@ Vue.component('modal-orden',{
                         Orden Compra
                     </label>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="row">
                             <div class="col-sm-4">
                                 <label>Proveedor</label>
@@ -108,7 +108,7 @@ Vue.component('modal-orden',{
                             </div>
                     </div>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <label>Productos</label>
                     <div style="height:320px;overflow:auto">
                             <producto-lista v-for="item in productos" v-bind:cambio="actualizar_datos" v-bind:producto="item" v-bind:eliminar="eliminar"  />
@@ -205,7 +205,7 @@ Vue.component('modal-orden',{
     },
     computed: {
         tipo_modal(){
-            return this.orden.id>0?"panel panel-primary animate":"panel panel-default animate";
+            return this.orden.id>0?"card-header text-white bg-info":"card-header text-white bg-success";
         },
         comprobar(){
             return this.orden.Folio_proveedor && this.orden.productos>0
@@ -216,12 +216,12 @@ Vue.component('modal-orden',{
 Vue.component("orden-lista",{
     props:['orden','seleccion'],
     template:`
-    <div class="panel panel-info">
-        <div class="panel-heading">
+    <div class="card">
+        <div class="card-header bg-secondary text-white">
             <label> ID ORDEN: {{orden.id}} </label>
             <i class="btn btn-link" @click="seleccion(orden)" v-if="estatus" style="float:right">Seleccionar</i>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <div class="row">
                 <div class="col-sm-4">
                     <label>Proveedor :</label>

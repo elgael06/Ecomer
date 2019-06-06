@@ -8,14 +8,14 @@
 
 {% block content %} 
 <link rel="stylesheet" type="text/css" href="{% static 'src/css/compras/proveedor.css' %}">
-<div class="panel panel-default" id="root">
-     <div class="panel-heading">
+<div class="card" id="root">
+     <div class="card-header">
           <label>Proveedores.</label>
           <div style="float:right;width:100px">
-               <i class="btn btn-success" @click="on_nuevo">Nuevo <i class="fa fa-plus" ></i></i>
+               <i class="btn btn-success" @click="on_nuevo"> <i class="fa fa-plus" ></i></i>
           </div>
      </div>
-      <div class="panel-body" style="height:410px">
+      <div class="card-body" style="height:410px">
           <lista-proveedores v-bind:items="lista_proveedores" v-bind:on_editar="on_editar"  />
       </div>
       <modal-proveedor

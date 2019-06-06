@@ -4,12 +4,14 @@ Vue.component('modal-producto',{
     props:["producto",'guardar','cancelar'],
     template:`
         <div class="modal_base" id="modal_producto">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+               
                     Inventario Producto.
                 </div>
-                <div class="panel-body">
-                    <div class="row">
+                <div class="car-body">
+                <div class="container">
+                <div class="row">
                         <div class="col-sm-12">
                             <label>Descripcion</label>
                             <i class="form-control">
@@ -44,6 +46,7 @@ Vue.component('modal-producto',{
                             <i class="btn btn-danger" @click="cancelar">Cancelar.</i>
                         </div>
                     </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,9 +56,9 @@ Vue.component('modal-producto',{
 Vue.component("busqueda-producto",{
     props:['Agregar'],
     template:`
-    <form class="col-sm-3" @submit.prevent="Buscar_producto">
+    <form class="col-sm-4" @submit.prevent="Buscar_producto">
         <label>Agregar Producto : </label>
-        <input type="text" class="form-control col-sm-7" v-model="producto" />
+        <input type="text" class="form-control col-sm-11" v-model="producto" />
     </form>
     `,
     data() {
@@ -94,8 +97,8 @@ Vue.component('inventario',{
     props:['inventario','Agregar'],
     template:`
     <table class="table">
-        <thead>
-            <tr class="success">
+        <thead class="bg-success">
+            <tr class="bg-success">
                 <th class="chico centro">ID</th>
                 <th>DESCRIPCIN</th>
                 <th class="chico centro">CANTIDAD</th>

@@ -180,7 +180,7 @@ Vue.component("Producto",{
      <div>
      <table class="table">
         <thead>
-            <tr>
+            <tr class="bg-success text-white">
                 <th>ID</th>
                 <th>Descripcion</th>
                 <th>Costo</th>
@@ -268,12 +268,12 @@ Vue.component("moda-alta",{
     ],
     template:`
 <div class="modal_base" id="modal_alta">
-    <div class="panel panel-default animate">
-        <div class="panel-heading" style="background:green;color:#FFF">
+    <div class="card animate">
+        <div class="card-header" style="background:green;color:#FFF">
             <i class="fa fa-close close" @click="cerrar"></i>
             <label><span v-if="seleccion.id==0">Agregar</span> <span v-if="seleccion.id > 0">Editar</span> Producto.</label>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <div class="row">
                 <div class="col-sm-12">
                     <label>Descripcion</label>
@@ -324,12 +324,12 @@ Vue.component("moda-imagenes",{
     },
     template:`
     <div class="modal_base" id="modal_fotos">
-        <div class="panel panel-default animate">
-            <div class="panel-heading" style="background:rgb(71, 142, 236);color:#FFF">
+        <div class="card animate">
+            <div class="card-header" style="background:rgb(71, 142, 236);color:#FFF">
                 <i class="fa fa-close close" @click="cerrar"></i>
                 <label> Imagenes De Producto.</label>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <div style="height:100px">
                 <img style="float:right" :src="imagen" height="87" alt="producto." v-if="imagen" />
                 <label> 
@@ -432,12 +432,12 @@ Vue.component("moda-codigos",{
     },
     template:`
     <div class="modal_base" id="modal_codigos">
-        <div class="panel panel-default animate">
-            <div class="panel-heading">
+        <div class="card animate">
+            <div class="card-header">
                 <i class="fa fa-close close" @click="cerrar"></i>
                 <label> Codigo De Producto.</label>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <div style="height:100px">
                 <img style="float:right" :src="imagen" height="87" alt="producto." v-if="imagen" />
                 <label> 
@@ -454,7 +454,7 @@ Vue.component("moda-codigos",{
                 <div id="contenedor_codigos" >
                    <table class="table">
                         <thead>
-                            <tr>
+                            <tr class="bg-info text-white">
                                 <th>ID</th>
                                 <th>CODIGO</th>
                                 <th>ACCION</th>
