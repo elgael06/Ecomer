@@ -2,10 +2,9 @@
  * Crear Modificar Ordenes De Compras
  */
 
-
- Vue.component('producto-lista',{
-     props:['producto','eliminar','cambio'],
-     template:`
+Vue.component("producto-lista", {
+  props: ["producto", "eliminar", "cambio"],
+  template: `
         <div class="card">
             <div class="card-header bg-warning text-white">
                 <i class="fa fa-close" style="float:right" @click="eliminar(producto)"></i>
@@ -42,23 +41,23 @@
             </div>
         </div>
      `,
-    methods: {
-        on_cantidad(){
-            let {cantidad,costo} =this.producto;
-            this.producto.total = cantidad* costo;
-            this.cambio();
-        },
-        on_costo(){
-            let {cantidad,costo} =this.producto;
-            this.producto.total = cantidad* costo;
-            this.cambio();
-        },
+  methods: {
+    on_cantidad() {
+      let { cantidad, costo } = this.producto;
+      this.producto.total = cantidad * costo;
+      this.cambio();
     },
- });
+    on_costo() {
+      let { cantidad, costo } = this.producto;
+      this.producto.total = cantidad * costo;
+      this.cambio();
+    }
+  }
+});
 
-Vue.component('modal-orden',{
-    props:['orden','productos','lista_proveedores','Guardar_orden'],
-    template:`
+Vue.component("modal-orden", {
+  props: ["orden", "productos", "lista_proveedores", "Guardar_orden"],
+  template: `
         <div class="modal_base" id="moda_orden">
             <div  class="card  animate">
                 <div :class="tipo_modal">
@@ -117,109 +116,119 @@ Vue.component('modal-orden',{
             </div>
         </div>
     `,
-    data() {
-        return {
-            seleccion:{
-                id:'',
-            },
-        }
-    },  
-    updated() {
-       
+  data() {
+    return {
+      seleccion: {
+        id: ""
+      }
+    };
+  },
+  updated() {},
+  methods: {
+    Agregar_producto() {
+      console.log("Agregar : ", this.seleccion.id);
+      this.buscar_producto();
     },
-    methods: {
-        Agregar_producto(){
-            console.log("Agregar : ",this.seleccion.id);
-            this.buscar_producto();
-        },
-        on_proveedor(){
-            let index = this.lista_proveedores.findIndex(e=>e.Nombre == this.orden.proveedor)
-            console.log(this.orden.proveedor);
-            console.log(index)
-            if(index>-1){
-                this.orden.Folio_proveedor = this.lista_proveedores[index].Id;
-            }
-        },
-        cerrar(){
-            
-            document.querySelector("#moda_orden").style.display="none";
-        },
-        eliminar(seleccion){
-            if(confirm(`Eliminar el Producto ${seleccion.descripcion} ?`)){
-                let indice = this.productos.findIndex(e=>e.id == seleccion.id)
-                this.productos.splice(indice,1);
-                this.actualizar_datos();
-            }
-        },
-        actualizar_datos(){
-            let total = 0;
-            this.orden.productos = this.productos.length || 0;
-            
-            for(p of  this.productos){
-                total+= parseFloat(p.total);
-            }
-            this.orden.Total = total;
-        },
-        buscar_producto(){
-            document.querySelector("#modal_load").style.display="flex";
-            fetch(`productos/api?id=${this.seleccion.id}`, {
-                method: 'get',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .catch(err =>{
-                     console.error("Error=>", err);
-                     alert("Codigo No Relacionado A producto !!!")
-                     document.querySelector("#modal_load").style.display="none";
-                 })
-                .then(res => res.json()
-                    .then(respuesta => {
-                    if( respuesta.producto.id){
-                            let index = this.productos.findIndex(e=>e.id== respuesta.producto.id);
-                            if(index ===-1)
-                                this.productos.push(respuesta.producto);
-                            else{
-                                let  prod =  this.productos.filter(e=>e.id== respuesta.producto.id);
-                                for(p of prod){
-                                    p.cantidad = parseFloat(p.cantidad);
-                                    p.total = parseFloat(p.total);
-                                    p.cantidad += parseFloat(respuesta.producto.cantidad);
-                                    p.total += parseFloat(respuesta.producto.total);
-                                }
-                            }
-                            this.actualizar_datos();
-                        }
-                        else 
-                        alert(`Codigo : ${this.seleccion.id}\n No Relacionado A producto !!!`)
-                    document.querySelector("#modal_load").style.display="none";                    
-                    this.seleccion.id ='';
-                    }).catch(e=>{
-                        console.error("Error=>", e);
-                        alert("Codigo No Relacionado A producto !!!")
-                        document.querySelector("#modal_load").style.display="none";
-                    })
+    on_proveedor() {
+      let index = this.lista_proveedores.findIndex(
+        e => e.Nombre == this.orden.proveedor
+      );
+      console.log(this.orden.proveedor);
+      console.log(index);
+      if (index > -1) {
+        this.orden.Folio_proveedor = this.lista_proveedores[index].Id;
+      }
+    },
+    cerrar() {
+      document.querySelector("#moda_orden").style.display = "none";
+    },
+    eliminar(seleccion) {
+      if (confirm(`Eliminar el Producto ${seleccion.descripcion} ?`)) {
+        let indice = this.productos.findIndex(e => e.id == seleccion.id);
+        this.productos.splice(indice, 1);
+        this.actualizar_datos();
+      }
+    },
+    actualizar_datos() {
+      let total = 0;
+      this.orden.productos = this.productos.length || 0;
+
+      for (p of this.productos) {
+        total += parseFloat(p.total);
+      }
+      this.orden.Total = total;
+    },
+    buscar_producto() {
+      document.querySelector("#modal_load").style.display = "flex";
+      fetch(`productos/api?id=${this.seleccion.id}`, {
+        method: "get",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .catch(err => {
+          console.error("Error=>", err);
+          alert("Codigo No Relacionado A producto !!!");
+          document.querySelector("#modal_load").style.display = "none";
+        })
+        .then(res =>
+          res
+            .json()
+            .then(respuesta => {
+              if (respuesta.producto.id) {
+                let index = this.productos.findIndex(
+                  e => e.id == respuesta.producto.id
                 );
-        }
+                if (index === -1) this.productos.push(respuesta.producto);
+                else {
+                  let prod = this.productos.filter(
+                    e => e.id == respuesta.producto.id
+                  );
+                  for (p of prod) {
+                    p.cantidad = parseFloat(p.cantidad);
+                    p.total = parseFloat(p.total);
+                    p.cantidad += parseFloat(respuesta.producto.cantidad);
+                    p.total += parseFloat(respuesta.producto.total);
+                  }
+                }
+                this.actualizar_datos();
+              } else
+                alert(
+                  `Codigo : ${
+                    this.seleccion.id
+                  }\n No Relacionado A producto !!!`
+                );
+              document.querySelector("#modal_load").style.display = "none";
+              this.seleccion.id = "";
+            })
+            .catch(e => {
+              console.error("Error=>", e);
+              alert("Codigo No Relacionado A producto !!!");
+              document.querySelector("#modal_load").style.display = "none";
+            })
+        );
+    }
+  },
+  computed: {
+    tipo_modal() {
+      return this.orden.id > 0
+        ? "card-header text-white bg-info"
+        : "card-header text-white bg-success";
     },
-    computed: {
-        tipo_modal(){
-            return this.orden.id>0?"card-header text-white bg-info":"card-header text-white bg-success";
-        },
-        comprobar(){
-            return this.orden.Folio_proveedor && this.orden.productos>0
-        }
-    },
+    comprobar() {
+      return this.orden.Folio_proveedor && this.orden.productos > 0;
+    }
+  }
 });
- 
-Vue.component("orden-lista",{
-    props:['orden','seleccion'],
-    template:`
+
+Vue.component("orden-lista", {
+  props: ["orden", "seleccion"],
+  template: `
     <div class="card">
         <div class="card-header bg-secondary text-white">
             <label> ID ORDEN: {{orden.id}} </label>
-            <i class="btn btn-link" @click="seleccion(orden)" v-if="estatus" style="float:right">Seleccionar</i>
+            <i class="btn btn-info" @click="seleccion(orden)" v-if="estatus" style="float:right">Seleccionar</i>
         </div>
         <div class="card-body">
             <div class="row">
@@ -259,157 +268,168 @@ Vue.component("orden-lista",{
         </div>
     </div>
     `,
-    computed:{
-        estatus(){
-            return this.orden.estatus != "F"
-        }
+  computed: {
+    estatus() {
+      return this.orden.estatus != "F";
     }
-
+  }
 });
 
 let root = new Vue({
-    el:'#root',
-    data() {
-        return {
-            orden:{
-                'id':0,
-                'Folio_proveedor':0,
-                'proveedor':'',
-                'productos':0,
-                'Total':0.0,
-                'Descripcion':'',
-                'estatus':'V',
-            },
-            productos:[],
-            lista_ordenes:[],
-            lista_proveedores:[],
+  el: "#root",
+  data() {
+    return {
+      orden: {
+        id: 0,
+        Folio_proveedor: 0,
+        proveedor: "",
+        productos: 0,
+        Total: 0.0,
+        Descripcion: "",
+        estatus: "V"
+      },
+      productos: [],
+      lista_ordenes: [],
+      lista_proveedores: []
+    };
+  },
+  created() {
+    console.log("Incia...");
+    this.obtener_compras();
+  },
+  methods: {
+    on_nueva() {
+      this.orden = {
+        id: 0,
+        Folio_proveedor: 0,
+        proveedor: "",
+        productos: 0,
+        Total: 0.0,
+        Descripcion: "",
+        estatus: "V"
+      };
+      this.productos = [];
+      this.obtener_proveedores();
+      document.querySelector("#moda_orden").style.display = "flex";
+    },
+    on_editar(seleccion) {
+      console.log(seleccion);
+      this.obtener_productos(seleccion.id);
+      this.orden = {
+        id: seleccion.id,
+        Folio_proveedor: seleccion.Folio_proveedor,
+        proveedor: seleccion.proveedor,
+        productos: seleccion.productos,
+        Total: seleccion.Total,
+        Descripcion: seleccion.Descripcion,
+        estatus: seleccion.estatus
+      };
+      this.obtener_proveedores();
+      document.querySelector("#moda_orden").style.display = "flex";
+    },
+    obtener_compras() {
+      //Compras
+      document.querySelector("#modal_load").style.display = "flex";
+      fetch(`ordenes/api`, {
+        method: "get",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json"
         }
+      })
+        .catch(err => console.error("Error=>", err))
+        .then(res =>
+          res.json().then(respuesta => {
+            this.lista_ordenes = respuesta.orden.lista;
+            document.querySelector("#modal_load").style.display = "none";
+          })
+        );
     },
-    created() {
-        console.log("Incia...");
-        this.obtener_compras();
-    },
-    methods: {
-        on_nueva(){
-            this.orden = {
-                'id':0,
-                'Folio_proveedor':0,
-                'proveedor':'',
-                'productos':0,
-                'Total':0.0,
-                'Descripcion':'',
-                'estatus':'V',
-            };
-            this.productos =[];
-            this.obtener_proveedores();
-            document.querySelector("#moda_orden").style.display="flex";
-        },
-        on_editar(seleccion){
-            console.log(seleccion);
-            this.obtener_productos(seleccion.id);
-            this.orden = {
-                'id':seleccion.id,
-                'Folio_proveedor':seleccion.Folio_proveedor,
-                'proveedor':seleccion.proveedor,
-                'productos':seleccion.productos,
-                'Total':seleccion.Total,
-                'Descripcion':seleccion.Descripcion,
-                'estatus':seleccion.estatus,
-            };
-            this.obtener_proveedores();
-            document.querySelector("#moda_orden").style.display="flex";
-        },
-        obtener_compras(){
-            //Compras
-            document.querySelector("#modal_load").style.display="flex";
-            fetch(`ordenes/api`, {
-                method: 'get',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .catch(err => console.error("Error=>", err))
-                .then(res => res.json().then(respuesta => {
-                    this.lista_ordenes = respuesta.orden.lista
-                    document.querySelector("#modal_load").style.display="none";
-                }));
-        },
-        obtener_proveedores(){
-            document.querySelector("#modal_load").style.display="flex";
-            fetch(`proveedores/api`, {
-                method: 'get',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .catch(err => console.error("Error=>", err))
-                .then(res => res.json().then(respuesta => {
-                    this.lista_proveedores = respuesta.Lista
-                    document.querySelector("#modal_load").style.display="none";
-                }));
-        },
-        obtener_productos(id){
-            document.querySelector("#modal_load").style.display="flex";
-            fetch(`productos/api`, {
-                method: 'post',
-                credentials: 'same-origin',
-                body:JSON.stringify({id_orden:id}),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .catch(err =>{
-                        console.error("Error=>", err)
-                        document.querySelector("#modal_load").style.display="none";                    })
-                .then(res => res.json().then(respuesta => {
-                   console.log(respuesta.productos)
-                   this.productos = respuesta.productos;
-                    document.querySelector("#modal_load").style.display="none";
-                }));  
-        },
-        Guardar_orden(){
-            document.querySelector("#modal_load").style.display="flex";
-            fetch(`ordenes/api`, {
-                method: 'post',
-                credentials: 'same-origin',
-                body:JSON.stringify(this.orden),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .catch(err =>{
-                        console.error("Error=>", err)
-                        document.querySelector("#modal_load").style.display="none";                    })
-                .then(res => res.json().then(respuesta => {
-                    this.orden.id= respuesta.orden.folio;
-                    this.Guardar_productos();
-                    alert(respuesta.orden.estatus)
-                    document.querySelector("#modal_load").style.display="none";
-                }));  
-        },
-        Guardar_productos(){
-            document.querySelector("#modal_load").style.display="flex";
-            fetch(`productos/api`, {
-                method: 'put',
-                credentials: 'same-origin',
-                body:JSON.stringify({
-                    id_orden:this.orden.id,
-                    productos: this.productos,
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .catch(err => console.error("Error=>", err))
-                .then(res => res.json().then(respuesta => {
-                  alert(respuesta.Productos)
-                  document.querySelector("#modal_load").style.display="none";
-                  this.obtener_proveedores();
-                  this.obtener_compras();
-                  document.querySelector("#moda_orden").style.display="none";
-                }));
+    obtener_proveedores() {
+      document.querySelector("#modal_load").style.display = "flex";
+      fetch(`proveedores/api`, {
+        method: "get",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json"
         }
+      })
+        .catch(err => console.error("Error=>", err))
+        .then(res =>
+          res.json().then(respuesta => {
+            this.lista_proveedores = respuesta.Lista;
+            document.querySelector("#modal_load").style.display = "none";
+          })
+        );
     },
+    obtener_productos(id) {
+      document.querySelector("#modal_load").style.display = "flex";
+      fetch(`productos/api`, {
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({ id_orden: id }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .catch(err => {
+          console.error("Error=>", err);
+          document.querySelector("#modal_load").style.display = "none";
+        })
+        .then(res =>
+          res.json().then(respuesta => {
+            console.log(respuesta.productos);
+            this.productos = respuesta.productos;
+            document.querySelector("#modal_load").style.display = "none";
+          })
+        );
+    },
+    Guardar_orden() {
+      document.querySelector("#modal_load").style.display = "flex";
+      fetch(`ordenes/api`, {
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify(this.orden),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .catch(err => {
+          console.error("Error=>", err);
+          document.querySelector("#modal_load").style.display = "none";
+        })
+        .then(res =>
+          res.json().then(respuesta => {
+            this.orden.id = respuesta.orden.folio;
+            this.Guardar_productos();
+            alert(respuesta.orden.estatus);
+            document.querySelector("#modal_load").style.display = "none";
+          })
+        );
+    },
+    Guardar_productos() {
+      document.querySelector("#modal_load").style.display = "flex";
+      fetch(`productos/api`, {
+        method: "put",
+        credentials: "same-origin",
+        body: JSON.stringify({
+          id_orden: this.orden.id,
+          productos: this.productos
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .catch(err => console.error("Error=>", err))
+        .then(res =>
+          res.json().then(respuesta => {
+            alert(respuesta.Productos);
+            document.querySelector("#modal_load").style.display = "none";
+            this.obtener_proveedores();
+            this.obtener_compras();
+            document.querySelector("#moda_orden").style.display = "none";
+          })
+        );
+    }
+  }
 });
