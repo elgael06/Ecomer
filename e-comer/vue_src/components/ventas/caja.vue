@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="card">
     <ControlesCaja v-bind:datos="cavecera_caja" v-bind:agregar_producto="agregar_producto"/>
@@ -87,6 +85,7 @@ export default {
             producto.venta;
         }
       } else alert("No Se Encuentra el producto !!!");
+      this.indicadores();
     },
     eliminar(index) {
       if (confirm("Eliminar ?")) this.productos_lista.splice(index, 1);
