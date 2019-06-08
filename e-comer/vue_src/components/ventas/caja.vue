@@ -34,7 +34,7 @@
         </table>
       </div>
     </div>
-    <PantallaCobro/>
+    <PantallaCobro v-bind:ticket="cavecera_caja" v-bind:guardarVenta="guardarVenta"/>
   </div>
 </template>
 <script>
@@ -59,6 +59,8 @@ export default {
         cliente: "",
         cantidad: 0,
         total: 0,
+        tipoPago: "Efectivo",
+        totalPaga: 0,
         descuento: 0,
         fecha: "2019-06-01"
       },
@@ -67,6 +69,7 @@ export default {
   },
   created() {
     console.log(" Caja...");
+    this.ObtenerTicket();
   },
   updated() {
     this.indicadores();
@@ -116,7 +119,9 @@ export default {
       });
     },
     pagar() {
-      document.querySelector("#modal_cobro").style.display = "flex";
+      if (this.cavecera_caja.cantidad > 0)
+        document.querySelector("#modal_cobro").style.display = "flex";
+      else alert("Sin Proctos !!!");
     },
     cancelar() {
       this.productos_lista = [];
@@ -129,6 +134,66 @@ export default {
         descuento: 0,
         fecha: "2019-06-01"
       };
+      this.ObtenerTicket();
+    },
+    ObtenerTicket() {
+      fetch(`/Ventas/Ticket/api`, {
+        method: "get",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .catch(e => alert("Error De Conexion !!"))
+        .then(e => {
+          e.json()
+            .then(res => {
+              this.id_producto = "";
+              console.log(res);
+              this.cavecera_caja = res;
+            })
+            .catch(e => alert("Error En Formato !!!"));
+        });
+    },
+    guardarVenta() {
+      let {
+        ticket,
+        cantidad,
+        totalPaga,
+        descuento,
+        tipoPago
+      } = this.cavecera_caja;
+      document.querySelector("#modal_load").style.display = "flex";
+      fetch(`/Ventas/Ticket/api`, {
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({
+          ticket: ticket,
+          cantidad: cantidad,
+          totalPaga: totalPaga,
+          descuento: descuento,
+          tipoPago: tipoPago,
+          productos: this.productos_lista
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .catch(e => alert("Error De Conexion !!"))
+        .then(e => {
+          e.json()
+            .then(res => {
+              document.querySelector("#modal_load").style.display = "none";
+              if (res.respuesta) {
+                this.cancelar();
+                document.querySelector("#modal_cobro").style.display = "none";
+              } else alert("Error Al Guardar PAgo...");
+            })
+            .catch(e => {
+              document.querySelector("#modal_load").style.display = "none";
+              alert("Error En Formato !!!");
+            });
+        });
     }
   },
   computed: {}

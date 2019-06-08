@@ -5,22 +5,23 @@ from django.db import models
 
 # Create your models here.
 
+
 class Cliente(models.Model):
-    Nombre =  models.CharField(max_length=200)
-    RFC =  models.CharField(max_length=20,default='X0X0X0X0X0X0')
-    Direccion =  models.CharField(max_length=200,default='Conosido.')
-    Email =  models.CharField(max_length=50,default='NA')
-    Telefono =  models.CharField(max_length=10)
-    Representante =  models.CharField(max_length=100)
-    Descripcion =  models.CharField(max_length=100,default="NA")
-    estatus = models.CharField(max_length=1,default='V')
+    Nombre = models.CharField(max_length=200)
+    RFC = models.CharField(max_length=20, default='X0X0X0X0X0X0')
+    Direccion = models.CharField(max_length=200, default='Conosido.')
+    Email = models.CharField(max_length=50, default='NA')
+    Telefono = models.CharField(max_length=10)
+    Representante = models.CharField(max_length=100)
+    Descripcion = models.CharField(max_length=100, default="NA")
+    estatus = models.CharField(max_length=1, default='V')
     fecha = models.DateField(auto_now_add=True)
     fecha_modificacion = models.DateField(auto_now=True)
     usuario_creo = models.IntegerField()
-    usuario_modifico = models.IntegerField() 
+    usuario_modifico = models.IntegerField()
 
 
-## Tiquet de venta 
+# Tiquet de venta
 class Asignacion_caja(models.Model):
     id_usuario = models.IntegerField()
     fondo_caja = models.FloatField()
@@ -36,7 +37,7 @@ class Ticket(models.Model):
     productos = models.IntegerField()
     total = models.FloatField()
     descuento = models.FloatField()
-    folio_cliente =  models.IntegerField()
+    folio_cliente = models.IntegerField()
     estatus = models.CharField(max_length=1)
     fecha = models.DateField(auto_now_add=True)
     hora = models.DateTimeField(auto_now_add=True)
@@ -50,7 +51,8 @@ class Producto_ticket(models.Model):
     total = models.FloatField()
     descuento = models.FloatField()
 
-class Asignacion_caja(models.Model):
+
+class Asignacion_caja_corte(models.Model):
     folio_asignacion = models.IntegerField()
     efectivo = models.FloatField()
     cheques = models.FloatField()
@@ -64,7 +66,8 @@ class Asignacion_caja(models.Model):
     fecha = models.DateField(auto_now_add=True)
     fecha_modificacion = models.DateField(auto_now=True)
 
-#pedidos de Producos 
+# pedidos de Producos
+
 
 class Pedido(models.Model):
     usuario_creo = models.IntegerField()
@@ -75,6 +78,6 @@ class Pedido(models.Model):
 
 
 class Producto_pedido(models.Model):
-    id_pedido  = models.IntegerField()
-    id_producto  = models.IntegerField()
-    cantidad =  models.FloatField()
+    id_pedido = models.IntegerField()
+    id_producto = models.IntegerField()
+    cantidad = models.FloatField()

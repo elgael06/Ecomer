@@ -7,7 +7,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}My Sistema {% endblock %}</title>
+    <title>{% block title %}MeliPOS {% endblock %}</title>
   <!-- plugins:css -->
     <link rel="stylesheet" href="{% static 'src/lib/font/css/font-awesome.css' %}">
   <link rel="stylesheet" href="{% static 'require/vendors/mdi/css/materialdesignicons.min.css'%}">
@@ -35,7 +35,7 @@
         <div class="navbar-brand-wrapper d-flex justify-content-center">
           <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
             <a class="navbar-brand brand-logo text-white" href="/">
-            <span class="fa fa-shopping-cart"></span>  MyEcomer
+            <span class="fa fa-shopping-cart"></span> MeliPOS
             </a>
             <a class="navbar-brand brand-logo-mini" href="/">
                <span class="fa fa-shopping-cart  text-white"></span>
@@ -171,9 +171,9 @@
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2018</span>
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2019</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-              Creado Por elgael
+               <span class="fa fa-shopping-cart"></span> MeliPOS
             </span>
           </div>
         </footer>
@@ -208,5 +208,8 @@
   <!-- End custom js for this page-->
 </body>
 <link rel="stylesheet" type="text/css" href="{% static 'src/css/main.css' %}?1.0.0"/>
+<script type="text/javascript">
+  let Usuario = "{{request.session.usuario}}";
+</script>
 </html>
 
