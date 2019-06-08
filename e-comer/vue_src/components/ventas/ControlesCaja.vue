@@ -1,6 +1,6 @@
 
 <template>
-  <div class="card-header bg-primary text-white">
+  <div class="card-header text-white" style="background:#62bbee">
     <div class="row">
       <div class="col-sm-2">
         <label>N. Ticket</label>
@@ -10,24 +10,24 @@
         <label>Cliente</label>
         <i class="form-control">{{datos.cliente}}</i>
       </div>
-      <div class="col-sm-2" style="text-align:right">
+      <div class="col-sm-2">
         <label>Cantidad</label>
         <i class="form-control" style="text-align:right">{{datos.cantidad}}</i>
       </div>
-      <div class="col-sm-2" style="text-align:right">
+      <div class="col-sm-2">
         <label>$total</label>
         <i class="form-control" style="text-align:right">
           <Moneda v-bind:cantidad="datos.total"/>
         </i>
       </div>
-      <div class="col-sm-2" style="text-align:right">
+      <div class="col-sm-2">
         <label>$Desc.</label>
         <i class="form-control" style="text-align:right">
           <Moneda v-bind:cantidad="datos.descuento"/>
         </i>
       </div>
       <hr>
-      <form class="col-sm-3" @submit.prevent="buscar_producto" style="text-align:right">
+      <form class="col-sm-3" @submit.prevent="buscar_producto">
         <label>Producto</label>
         <input
           type="text"
@@ -38,13 +38,13 @@
         >
       </form>
       <div class="col-sm-6">
-        <label>Acciones</label>
+        <label style="display:block">Acciones</label>
         <i class="btn btn-primary btn-sm fa fa-search" @click="seleccionar_producto">Buscar</i>
         <i class="btn btn-warning btn-sm fa fa-user" @click="seleccinar_cliente">Cliente</i>
         <i class="btn btn-success btn-sm fa fa-money" @click="pagar_cobro">Cobrar</i>
         <i class="btn btn-danger btn-sm fa fa-trash" @click="cancelar_cobro">Cancelar</i>
       </div>
-      <div class="col-sm-3" style="text-align:right">
+      <div class="col-sm-3">
         <label>Fecha</label>
         <input
           type="text"
@@ -63,7 +63,7 @@ import Moneda from "../ComponentesGlobales/Moneda";
 
 export default {
   name: "ControlesCaja",
-  props: ["datos", "agregar_producto"],
+  props: ["datos", "agregar_producto", "pagar", "cancelar"],
   components: {
     Moneda
   },
@@ -85,9 +85,11 @@ export default {
     },
     pagar_cobro() {
       console.log("Pagar...");
+      this.pagar();
     },
     cancelar_cobro() {
       console.log("Cancelar Cobro...");
+      confirm("Desea Cancelar El Ticket?") ? this.cancelar() : "";
     },
     obtener_producto() {
       fetch(`/Compras/productos/api?id=${this.id_producto}`, {

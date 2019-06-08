@@ -1,13 +1,18 @@
 <template>
   <div class="card">
-    <ControlesCaja v-bind:datos="cavecera_caja" v-bind:agregar_producto="agregar_producto"/>
+    <ControlesCaja
+      v-bind:datos="cavecera_caja"
+      v-bind:agregar_producto="agregar_producto"
+      v-bind:pagar="pagar"
+      v-bind:cancelar="cancelar"
+    />
     <div class="card-body">
       <label>Lista Productos :</label>
       <div style="height:340px;overflow:auto">
         <table class="table table-condensed">
           <thead>
             <tr class="bg-info text-white">
-              <th>Folio</th>
+              <th>#</th>
               <th>Descripcion</th>
               <th>Costo</th>
               <th>Cantidad</th>
@@ -29,19 +34,22 @@
         </table>
       </div>
     </div>
+    <PantallaCobro/>
   </div>
 </template>
 <script>
 import ControlesCaja from "./ControlesCaja";
 import PrductosCaja from "./ProductosCaja";
 import productoLista from "./ProductoLista";
+import PantallaCobro from "./PantallaCobro";
 
 export default {
   name: "Caja",
   components: {
     ControlesCaja,
     PrductosCaja,
-    productoLista
+    productoLista,
+    PantallaCobro
   },
   data() {
     return {
@@ -106,6 +114,21 @@ export default {
 
         return e;
       });
+    },
+    pagar() {
+      document.querySelector("#modal_cobro").style.display = "flex";
+    },
+    cancelar() {
+      this.productos_lista = [];
+      this.cavecera_caja = {
+        ticket: 0,
+        id_cliente: 0,
+        cliente: "",
+        cantidad: 0,
+        total: 0,
+        descuento: 0,
+        fecha: "2019-06-01"
+      };
     }
   },
   computed: {}

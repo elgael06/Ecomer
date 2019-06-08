@@ -5,8 +5,8 @@
 Vue.component("producto-lista", {
   props: ["producto", "eliminar", "cambio"],
   template: `
-        <div class="card">
-            <div class="card-header bg-warning text-white">
+        <div class="card mt-4">
+            <div class="card-header bg-secondary text-white">
                 <i class="fa fa-close" style="float:right" @click="eliminar(producto)"></i>
                 <label>ID: {{producto.id}}</label>
                 <label> {{producto.descripcion}}</label>
@@ -68,7 +68,7 @@ Vue.component("modal-orden", {
                         Orden Compra
                     </label>
                 </div>
-                <div class="card-body">
+                <div class="card-body" style="background:#e9efee"">
                     <div class="row">
                             <div class="col-sm-4">
                                 <label>Proveedor</label>
@@ -103,13 +103,13 @@ Vue.component("modal-orden", {
                             <div class="col-sm-5">      
                             <i class="btn btn-info fa fa-search" style="margin-top:20px" > Buscar</i>
                                 <i class="btn btn-success fa fa-save" style="margin-top:20px" v-if="comprobar" @click="Guardar_orden" > Guardar</i>
-                                <i class="btn btn-danger fa fa-close" style="float:right;margin-top:20px" > Cancelar</i>
+                                <i class="btn btn-danger fa fa-close" style="float:right;margin-top:20px" @click="cerrar" > Cancelar</i>
                             </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body" style="background:#e9efee"">
                     <label>Productos</label>
-                    <div style="height:320px;overflow:auto">
+                    <div style="height:320px;overflow:auto;background:#FFF" class="p-2">
                             <producto-lista v-for="item in productos" v-bind:cambio="actualizar_datos" v-bind:producto="item" v-bind:eliminar="eliminar"  />
                     </div>
                 </div>
