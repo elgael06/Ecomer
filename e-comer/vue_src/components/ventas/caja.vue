@@ -8,7 +8,7 @@
     />
     <div class="card-body">
       <label>Lista Productos :</label>
-      <div style="height:340px;overflow:auto">
+      <div style="height:340px;overflow:auto;width:105%;margin-left:-2%">
         <table class="table table-condensed">
           <thead>
             <tr class="bg-info text-white">
@@ -161,16 +161,18 @@ export default {
         cantidad,
         totalPaga,
         descuento,
-        tipoPago
+        tipoPago,
+        total
       } = this.cavecera_caja;
       document.querySelector("#modal_load").style.display = "flex";
+
       fetch(`/Ventas/Ticket/api`, {
         method: "post",
         credentials: "same-origin",
         body: JSON.stringify({
           ticket: ticket,
           cantidad: cantidad,
-          totalPaga: totalPaga,
+          totalPaga: total,
           descuento: descuento,
           tipoPago: tipoPago,
           productos: this.productos_lista
@@ -185,8 +187,9 @@ export default {
             .then(res => {
               document.querySelector("#modal_load").style.display = "none";
               if (res.respuesta) {
-                this.cancelar();
+                this.ImprimirTicket();
                 document.querySelector("#modal_cobro").style.display = "none";
+                this.cancelar();
               } else alert("Error Al Guardar PAgo...");
             })
             .catch(e => {
@@ -194,7 +197,89 @@ export default {
               alert("Error En Formato !!!");
             });
         });
-    }
+    },
+    ImprimirTicket(){
+       let {
+        ticket,
+        cantidad,
+        totalPaga,
+        descuento,
+        tipoPago,
+        cliente,
+        fecha,
+        total
+      } = this.cavecera_caja;
+      let producto = this.productos_lista;
+
+      var printWin = window.open("",'Ticket',
+       'width=320,height=420,,top=50,left=200,toolbars=no,scrollbars=no,status=no,resizable=no');
+      let cuerpo =` <div style="width:320px">
+          <label style="width:120px">Ticket : ${ticket} </label> 
+          <label style="width:150px;float:right"> Fecha : ${fecha}</label> 
+          <p>Cliente : ${cliente}</p>
+          <label styles="float:right">Productos : ${cantidad}</label>`;
+          
+      cuerpo += `<table style="font-size:10px;min-height:90px">
+                  <thead> 
+                    <tr>
+                      <th>#</th>
+                      <th>Descripcion</th>
+                      <th>Costo</th>
+                      <th>Cantidad</th>
+                      <th>Descuento</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>`
+      let cont = 0;
+      for (let item of producto){
+        cont++;
+        cuerpo += `
+        <tr>
+          <td>${cont}</td>
+          <td>${item.descripcion}</td>
+          <td style="text-align:right"> ${this.redondeo_cantidad(item.costo)}</td>
+          <td style="text-align:right">${item.cantidad}</td>
+          <td style="text-align:right">${item.descuento} %</td>
+          <td style="text-align:right">$ ${this.redondeo_cantidad(item.total)}</td>
+        </tr>
+        `
+      }
+      cuerpo += `
+        <tr><th colspan="5">--------------></th>
+        <th>
+          <label style="width:150px;">Total : ${ this.redondeo_cantidad(total)}</label>
+        </th>
+      </tr>
+      </tbody></table>
+      <hr />
+      <div style="font-size:12px">
+      <label>Descuento :  ${this.redondeo_cantidad(descuento)}</label>
+      <label style="width:150px;">Pago Con : ${this.redondeo_cantidad(totalPaga)}</label>
+      <label style="width:150px;">Cambio : ${this.redondeo_cantidad(totalPaga -total)}</label>
+      </div> 
+      <div style="margin-top:20px;font.size:12px;text-align:center">
+        <label >Gracias Por Su Compra</label>
+      </div>
+      </div>`
+      printWin.window.document.body.innerHTML = cuerpo;
+      printWin.focus();
+      printWin.print();
+      //printWin.close();
+    },
+     Formato_moneda(numero_) {
+                const decimal_con_cero = (i) => i > 9 || i.search(0) > -1 ? i : i + "0";
+                const mayora_a_mil = (numero) => new Intl.NumberFormat('es-MX').format(numero);
+
+                const numero_string = numero_.toString();
+                const decimal = numero_string.split(".").length > 1 ? decimal_con_cero(numero_string.split(".")[1]) : "00";
+                const unidades = numero_string.split(".").length > 0 ? mayora_a_mil(numero_string.split(".")[0]) : "0";
+
+                return `$${unidades != 'NaN' ? unidades : 0}.${decimal}`;
+      },
+      redondeo_cantidad(numero) {
+        return this.Formato_moneda(Math.round(numero * 100) / 100);
+      }
   },
   computed: {}
 };

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development",
-    "dev-server":"webpack --watch --color --inline",
+    "dev-server": "webpack --watch --color --inline",
     "prod": "webpack --mode production"
   },
   "keywords": [],
