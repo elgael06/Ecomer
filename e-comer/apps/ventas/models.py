@@ -42,6 +42,7 @@ class Ticket(models.Model):
     fecha = models.DateField(auto_now_add=True)
     hora = models.DateTimeField(auto_now_add=True)
     tipo_pago = models.CharField(max_length=2)
+    disenioTicket = models.CharField(max_length=20000,default="<h1>Sin Datos</h1>")
 
 
 class Producto_ticket(models.Model):

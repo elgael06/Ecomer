@@ -165,6 +165,8 @@ export default {
         total
       } = this.cavecera_caja;
       document.querySelector("#modal_load").style.display = "flex";
+      
+      let disenioTicket = this.ImprimirTicket();
 
       fetch(`/Ventas/Ticket/api`, {
         method: "post",
@@ -175,7 +177,8 @@ export default {
           totalPaga: total,
           descuento: descuento,
           tipoPago: tipoPago,
-          productos: this.productos_lista
+          productos: this.productos_lista,
+          disenioTicket: disenioTicket
         }),
         headers: {
           "Content-Type": "application/json"
@@ -187,7 +190,6 @@ export default {
             .then(res => {
               document.querySelector("#modal_load").style.display = "none";
               if (res.respuesta) {
-                this.ImprimirTicket();
                 document.querySelector("#modal_cobro").style.display = "none";
                 this.cancelar();
               } else alert("Error Al Guardar PAgo...");
@@ -266,6 +268,7 @@ export default {
       printWin.focus();
       printWin.print();
       //printWin.close();
+      return cuerpo;
     },
      Formato_moneda(numero_) {
                 const decimal_con_cero = (i) => i > 9 || i.search(0) > -1 ? i : i + "0";

@@ -54,7 +54,8 @@ class TicketView(APIView):
             descuento=request.data.get('descuento'),
             estatus="P",
             fecha=fecha_hoy(),
-            tipo_pago=AbreviaturaPago(request.data.get('tipoPago'))
+            tipo_pago=AbreviaturaPago(request.data.get('tipoPago')),
+            disenioTicket = request.data.get('disenioTicket')
         )
         productos = json.loads(json.dumps(request.data.get("productos")))
         for prod in productos:
@@ -74,6 +75,9 @@ class TicketView(APIView):
             )
         data["respuesta"] = True
         return JsonResponse(data)
+    
+    def put(self,request):
+        return JsonResponse({})
 
     def verificarTicket(self, id_usuario):
         asignacion = self.verificarAsignacion(id_usuario=id_usuario)
