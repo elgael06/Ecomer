@@ -17,15 +17,28 @@ from .models import Asignacion_caja, Ticket, Cliente, Producto_ticket
 
 def index(request):
     return acceso(request, 'ventas/index.html', {})
-
+def asignacion(request):
+    return acceso(request, 'ventas/asignacion.html', {})
 
 # api Asignacion
 class AsignacionView(APIView):
     def get(self, request):
-        data = {}
+        data = []
+        asignacion = Asignacion_caja.objects.filter(fecha= request.GET.get('fecha'))
+        if asignacion.exists():
+            for item in asignacion:
+                data.append({
+                    'id':item.id,
+                   'id_usuario':  item.id_usuario,
+                   'fondo_cajai': item.fondo_caja,
+                    'usuario_creo':item.usuario_creo,
+                    'usuario_modifico':item.usuario_modifico,
+                    'estatus':item.estatus,
+                    'fecha':item.fecha,
+                    'fecha_modificacion':item.fecha_modificacion,
+                })
 
-        return JsonResponse(data)
-
+        return JsonResponse({'lista':data})
 
 class TicketView(APIView):
     def get(self, request):

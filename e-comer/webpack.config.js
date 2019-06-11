@@ -1,80 +1,13 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { VueLoaderPlugin } = require('vue-loader');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { VueLoaderPlugin } = require("vue-loader");
 
 module.exports = [
-  {//Default
-  entry: './vue_src/index.js',
-  output: {
-    path: __dirname + '/files/static/dist',
-    filename: 'bundle.js'
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader'
-        }
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      }
-    ]
-  },
-  resolve: {
-    alias: {
-      'vue$': 'vue/dist/vue.esm.js'
-    },
-    extensions: ['*', '.js', '.vue', '.json']
-  },
-  plugins: [
-    new VueLoaderPlugin(),
-    new HtmlWebpackPlugin({
-      template: './vue_src/index.html'
-    })
-  ]
-},
-{//prueba 1
-  entry: './vue_src/prueba.js',
-  output: {
-     path: __dirname + '/files/static/dist/prueba',
-    filename: 'bundle.js'
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader'
-        }
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      }
-    ]
-  },
-  resolve: {
-    alias: {
-      'vue$': 'vue/dist/vue.esm.js'
-    },
-    extensions: ['*', '.js', '.vue', '.json']
-  },
-  plugins: [
-    new VueLoaderPlugin(),
-    new HtmlWebpackPlugin({
-      template: './vue_src/index.html'
-    })
-  ],
-  },
-   {//Ventas
-    entry: './vue_src/ventas.js',
+  {
+    //Default
+    entry: "./vue_src/index.js",
     output: {
-       path: __dirname + '/files/static/dist/ventas',
-      filename: 'bundle.js'
+      path: __dirname + "/files/static/dist",
+      filename: "bundle.js"
     },
     module: {
       rules: [
@@ -82,26 +15,121 @@ module.exports = [
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
-            loader: 'babel-loader'
+            loader: "babel-loader"
           }
         },
         {
           test: /\.vue$/,
-          loader: 'vue-loader'
+          loader: "vue-loader"
         }
       ]
     },
     resolve: {
       alias: {
-        'vue$': 'vue/dist/vue.esm.js'
+        vue$: "vue/dist/vue.esm.js"
       },
-      extensions: ['*', '.js', '.vue', '.json']
+      extensions: ["*", ".js", ".vue", ".json"]
     },
     plugins: [
       new VueLoaderPlugin(),
       new HtmlWebpackPlugin({
-        template: './vue_src/index.html'
+        template: "./vue_src/index.html"
       })
     ]
+  },
+  {
+    //prueba 1
+    entry: "./vue_src/prueba.js",
+    output: {
+      path: __dirname + "/files/static/dist/prueba",
+      filename: "bundle.js"
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader"
+          }
+        },
+        {
+          test: /\.vue$/,
+          loader: "vue-loader"
+        }
+      ]
+    },
+    resolve: {
+      alias: {
+        vue$: "vue/dist/vue.esm.js"
+      },
+      extensions: ["*", ".js", ".vue", ".json"]
+    },
+    plugins: [
+      new VueLoaderPlugin(),
+      new HtmlWebpackPlugin({
+        template: "./vue_src/index.html"
+      })
+    ]
+  },
+  {
+    //Ventas
+    entry: "./vue_src/ventas.js",
+    output: {
+      path: __dirname + "/files/static/dist/ventas",
+      filename: "bundle.js"
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader"
+          }
+        },
+        {
+          test: /\.vue$/,
+          loader: "vue-loader"
+        }
+      ]
+    },
+    resolve: {
+      alias: {
+        vue$: "vue/dist/vue.esm.js"
+      },
+      extensions: ["*", ".js", ".vue", ".json"]
+    },
+    plugins: [new VueLoaderPlugin()]
+  },
+  {
+    //asignaciones
+    entry: "./vue_src/asignaciones.js",
+    output: {
+      path: __dirname + "/files/static/dist/asignaciones",
+      filename: "bundle.js"
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader"
+          }
+        },
+        {
+          test: /\.vue$/,
+          loader: "vue-loader"
+        }
+      ]
+    },
+    resolve: {
+      alias: {
+        vue$: "vue/dist/vue.esm.js"
+      },
+      extensions: ["*", ".js", ".vue", ".json"]
+    },
+    plugins: [new VueLoaderPlugin()]
   }
-]
+];
