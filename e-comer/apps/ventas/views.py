@@ -11,34 +11,46 @@ from ..Acceso import acceso
 from ..manejo_fecha import fecha_hoy
 from ..inventario.models import Inventario_producto
 from .models import Asignacion_caja, Ticket, Cliente, Producto_ticket
+from ..empleados.models import Usuario
 
 # Create your views here.
 
 
 def index(request):
     return acceso(request, 'ventas/index.html', {})
+
+
 def asignacion(request):
     return acceso(request, 'ventas/asignacion.html', {})
 
 # api Asignacion
+
+
 class AsignacionView(APIView):
     def get(self, request):
         data = []
-        asignacion = Asignacion_caja.objects.filter(fecha= request.GET.get('fecha'))
+        asignacion = Asignacion_caja.objects.filter(
+            fecha=request.GET.get('fecha'),
+            estatus=request.GET.get('estatus'),)
         if asignacion.exists():
             for item in asignacion:
+                emp = Usuario.objects.filter(id=item.id_usuario)
+                creo = Usuario.objects.filter(id=item.usuario_creo)
+                mod = Usuario.objects.filter(id=item.usuario_modifico)
                 data.append({
-                    'id':item.id,
-                   'id_usuario':  item.id_usuario,
-                   'fondo_cajai': item.fondo_caja,
-                    'usuario_creo':item.usuario_creo,
-                    'usuario_modifico':item.usuario_modifico,
-                    'estatus':item.estatus,
-                    'fecha':item.fecha,
-                    'fecha_modificacion':item.fecha_modificacion,
+                    'id': item.id,
+                    'id_usuario':  item.id_usuario,
+                    'usuario':  emp[0].nombre_completo,
+                    'fondo_caja': item.fondo_caja,
+                    'usuario_creo': creo[0].nombre_completo,
+                    'usuario_modifico': mod[0].nombre_completo,
+                    'estatus': item.estatus,
+                    'fecha': item.fecha,
+                    'fecha_modificacion': item.fecha_modificacion,
                 })
 
-        return JsonResponse({'lista':data})
+        return JsonResponse({'lista': data})
+
 
 class TicketView(APIView):
     def get(self, request):
@@ -68,7 +80,7 @@ class TicketView(APIView):
             estatus="P",
             fecha=fecha_hoy(),
             tipo_pago=AbreviaturaPago(request.data.get('tipoPago')),
-            disenioTicket = request.data.get('disenioTicket')
+            disenioTicket=request.data.get('disenioTicket')
         )
         productos = json.loads(json.dumps(request.data.get("productos")))
         for prod in productos:
@@ -88,8 +100,8 @@ class TicketView(APIView):
             )
         data["respuesta"] = True
         return JsonResponse(data)
-    
-    def put(self,request):
+
+    def put(self, request):
         return JsonResponse({})
 
     def verificarTicket(self, id_usuario):
