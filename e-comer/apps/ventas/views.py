@@ -47,10 +47,32 @@ class AsignacionView(APIView):
                     'estatus': item.estatus,
                     'fecha': item.fecha,
                     'fecha_modificacion': item.fecha_modificacion,
+                    'tickets':self.consultarTickets(folio=item.id)
                 })
 
         return JsonResponse({'lista': data})
 
+    def consultarTickets(self,folio):
+        t = Ticket.objects.filter(folio_asignacion=folio)
+        total = 0
+        data =[]
+        if (t.exists()):
+            for tiket in t:
+                data.append({
+                    'ticket': tiket.id,
+                    'id_cliente': tiket.folio_cliente,
+                    'cantidad': tiket.productos,
+                    'total': tiket.total,
+                    'tipoPago': TiposDePagos(t=tiket.tipo_pago),
+                    'descuento': tiket.descuento,
+                    'fecha': tiket.fecha,
+                    'hora':tiket.hora
+                })
+                total += tiket.total
+        return {
+            'lista':data,
+            'total':total
+        }
 
 class TicketView(APIView):
     def get(self, request):

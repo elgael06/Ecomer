@@ -10,6 +10,9 @@
           <label>Cajer@:</label>
           <i>{{asignacion.usuario}}</i>
         </div>
+        <div class="col-sm-2">
+          <i class="btn btn-default" :class="claseEstatus">{{estatus_}}</i>
+        </div>
       </div>
     </div>
     <div class="card-body">
@@ -22,21 +25,19 @@
           <label>Modifico:</label>
           <i class="form-control">{{asignacion.usuario_modifico}}</i>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3 mt-1">
           <label>Fondo Caja:</label>
           <i class="form-control">{{asignacion.fondo_caja}}</i>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3 mt-1">
           <label>Venta Caja:</label>
-          <i class="form-control">{{asignacion.fondo_caja}}</i>
+          <i class="form-control">{{asignacion.tickets.total}}</i>
         </div>
         <div class="col-sm-3">
-          <label>Corte Caja:</label>
-          <i class="form-control">{{asignacion.fondo_caja}}</i>
+          <i class="btn btn-info btn-block mt-4 fa fa-list" @click="evTicket">Tickets</i>
         </div>
         <div class="col-sm-3">
-          <label>Diferencia Caja:</label>
-          <i class="form-control">{{asignacion.fondo_caja}}</i>
+          <i class="btn btn-success btn-block mt-4 fa fa-money" @click="evCorte">Corte</i>
         </div>
       </div>
     </div>
@@ -46,7 +47,23 @@
 <script>
 export default {
   name: "Asignacion",
-  props: ["asignacion"]
+  props: ["asignacion"],
+  methods:{
+    evTicket(){
+      console.log('tickets', this.asignacion.tickets.lista)
+    },
+    evCorte(){
+      console.log('Corte')
+    },
+  },
+  computed:{
+    estatus_(){
+      return this.asignacion.estatus =="V" ?"Vigente":"Cancelado";
+    },
+    claseEstatus(){
+      return this.asignacion.estatus =="V" ?"btn btn-primary disable":"btn btn-warning disable";
+    }
+  }
 };
 </script>
 

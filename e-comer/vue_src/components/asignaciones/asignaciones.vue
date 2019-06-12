@@ -26,7 +26,7 @@
     </div>
     <div class="card-body">
       <label>Liista Asignaciones</label>
-      <div style="height:400px">
+      <div style="height:400px;overflow:auto">
         <Asignacion v-for="item in listaAsignacion" :asignacion="item" :key="item.id"/>
       </div>
     </div>
@@ -53,6 +53,8 @@ export default {
     },
     obtenerAsignacionPorFecha() {
       ///Ventas/Asignacion/api?fecha=2019-06-09
+      
+        document.querySelector("#modal_load").style.display = "flex";
       fetch(
         `/Ventas/Asignacion/api?fecha=${this.fecha}&estatus=${this.estatus}`,
         {
@@ -67,6 +69,7 @@ export default {
         .then(e => {
           e.json()
             .then(res => {
+        document.querySelector("#modal_load").style.display = "none";
               this.listaAsignacion = res.lista;
             })
             .catch(e => alert("Error En Formato JSON !!!"));
